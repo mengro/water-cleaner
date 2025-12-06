@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Menu, Phone } from "lucide-react"
 
-import { baseInfo, navLinks } from "@/config"
+import { navLinks } from "@/config"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -9,13 +9,13 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 
-export function SiteHeader() {
+export function SiteHeader({ siteConfig }: { siteConfig: any }) {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-primary">{baseInfo.brandName}</span>
+            <span className="text-xl font-bold text-primary">{siteConfig.brandName}</span>
           </Link>
         </div>
 
@@ -35,7 +35,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-4">
           <div className="hidden md:flex items-center gap-2 text-sm font-medium text-muted-foreground">
             <Phone className="h-4 w-4" />
-            <span>{baseInfo.tel}</span>
+            <span>{siteConfig.tel}</span>
           </div>
           
           {/* Mobile Menu */}
@@ -60,9 +60,9 @@ export function SiteHeader() {
                 ))}
                 <div className="mt-4 pt-4 border-t">
                   <p className="text-sm text-muted-foreground mb-2">联系电话</p>
-                  <a href={`tel:${baseInfo.tel}`} className="text-lg font-bold text-primary flex items-center gap-2">
+                  <a href={`tel:${siteConfig.tel}`} className="text-lg font-bold text-primary flex items-center gap-2">
                     <Phone className="h-4 w-4" />
-                    {baseInfo.tel}
+                    {siteConfig.tel}
                   </a>
                 </div>
               </nav>

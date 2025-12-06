@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// 产品分类
+model Category {
+  id          String    @id @default(cuid())
+  name        String    // 分类名称，如：净水药剂
+  slug        String    @unique // URL友好的标识符，如：agents
+  description String?   // 分类描述
+  sortOrder   Int       @default(0) // 排序权重
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// 产品
+model Product {
+  id          String   @id @default(cuid())
+  name        String   // 产品名称
+  description String?  // 简短描述
+  content     String?  // 详细介绍 (Markdown或HTML)
+  images      String?  // 图片列表 (JSON字符串存储)
+  features    String?  // 产品特性 (JSON字符串存储)
+  specs       String?  // 技术参数 (JSON字符串存储)
+  isPublished Boolean  @default(true) // 是否发布
+  sortOrder   Int      @default(0)
+  
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// 公司基本信息配置
+model SiteConfig {
+  id          String   @id @default("default") // 只有一个配置项
+  brandName   String   @default("康备尔净水")
+  companyName String   @default("杭州康备尔设计咨询有限公司")
+  tel         String?
+  contact     String?
+  email       String?
+  address     String?
+  aboutUs     String?  // 关于我们详细介绍
+  
+  updatedAt   DateTime @updatedAt
+}
+
+// 管理员账号 (简单版)
+model AdminUser {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String   // 加密后的密码
+  createdAt DateTime @default(now())
+}

@@ -3,9 +3,22 @@ import { ArrowRight, CheckCircle2, Factory, ShieldCheck, Truck } from "lucide-re
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { baseInfo, productCategories } from "@/config"
+import { prisma } from "@/lib/prisma"
 
-export default function Home() {
+export default async function Home() {
+  const [siteConfig, categories] = await Promise.all([
+    prisma.siteConfig.findUnique({ where: { id: "default" } }),
+    prisma.category.findMany({ 
+      include: { products: { take: 3 } },
+      orderBy: { sortOrder: 'asc' }
+    })
+  ]);
+
+  const config = siteConfig || {
+    brandName: "康备尔净水",
+    companyName: "杭州康备尔设计咨询有限公司"
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
@@ -82,7 +95,7 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {productCategories.map((category) => (
+            {categories.map((category) => (
               <Link key={category.id} href={`/products?category=${category.id}`} className="group">
                 <Card className="h-full transition-all hover:shadow-lg hover:border-primary/50">
                   <CardHeader>
@@ -91,11 +104,11 @@ export default function Home() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                       {category.description}
                     </p>
                     <ul className="space-y-2">
-                      {category.products.slice(0, 3).map((product) => (
+                      {category.products.map((product) => (
                         <li key={product.id} className="flex items-center text-sm text-slate-600">
                           <CheckCircle2 className="h-3 w-3 mr-2 text-primary/60" />
                           {product.name}
@@ -124,9 +137,9 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold mb-6 text-white">关于 {baseInfo.brandName}</h2>
+              <h2 className="text-3xl font-bold mb-6 text-white">关于 {config.brandName}</h2>
               <p className="text-slate-200 mb-6 leading-relaxed">
-                {baseInfo.companyName}集科研、生产、经营、服务于一体，是从事水处理剂的开发、生产、经营及从事水处理工程的设计、研发、运营及各类废水，噪音治理的专业企业。
+                {config.companyName}集科研、生产、经营、服务于一体，是从事水处理剂的开发、生产、经营及从事水处理工程的设计、研发、运营及各类废水，噪音治理的专业企业。
               </p>
               <p className="text-slate-200 mb-8 leading-relaxed">
                 本公司与多所高等院校及化工科研单位合作，研制生产出“田邦”“中禹”牌絮凝剂系列产品：聚氯化铝、聚氯化铝铁等，并提供聚丙烯酰胺和具有阻垢、分散、缓蚀、杀菌、除油，混凝等多种性能的几十种药剂。

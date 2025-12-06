@@ -1,9 +1,18 @@
-import { baseInfo } from "@/config"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { prisma } from "@/lib/prisma"
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const siteConfig = await prisma.siteConfig.findUnique({ where: { id: "default" } });
+  
+  const config = siteConfig || {
+    tel: "",
+    contact: "",
+    email: "",
+    address: ""
+  };
+
   return (
     <div className="container mx-auto py-12 px-4">
       <h1 className="text-3xl font-bold mb-8">联系我们</h1>
@@ -13,10 +22,10 @@ export default function ContactPage() {
           <div className="space-y-4 text-slate-600">
             <p>如果您有任何产品需求或技术问题，欢迎随时联系我们。</p>
             <div className="pt-4 space-y-2">
-              <p><strong>电话：</strong>{baseInfo.tel}</p>
-              <p><strong>联系人：</strong>{baseInfo.contact}</p>
-              <p><strong>邮箱：</strong>{baseInfo.email}</p>
-              <p><strong>地址：</strong>{baseInfo.address}</p>
+              <p><strong>电话：</strong>{config.tel}</p>
+              <p><strong>联系人：</strong>{config.contact}</p>
+              <p><strong>邮箱：</strong>{config.email}</p>
+              <p><strong>地址：</strong>{config.address}</p>
             </div>
           </div>
         </div>
