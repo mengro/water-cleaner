@@ -95,7 +95,7 @@ export default async function Home() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {categories.map((category) => (
+            {categories.map((category: any) => (
               <Link key={category.id} href={`/products?category=${category.id}`} className="group">
                 <Card className="h-full transition-all hover:shadow-lg hover:border-primary/50">
                   <CardHeader>
@@ -108,7 +108,7 @@ export default async function Home() {
                       {category.description}
                     </p>
                     <ul className="space-y-2">
-                      {category.products.map((product) => (
+                      {category.products.map((product: any) => (
                         <li key={product.id} className="flex items-center text-sm text-slate-600">
                           <CheckCircle2 className="h-3 w-3 mr-2 text-primary/60" />
                           {product.name}

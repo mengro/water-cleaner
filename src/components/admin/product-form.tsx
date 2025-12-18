@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +17,62 @@ import { useRouter } from "next/navigation";
 
 export function ProductForm({ categories, initialData }: { categories: any[], initialData?: any }) {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [imageUrls, setImageUrls] = useState<string[]>(() => {
+    try {
+      if (initialData?.images) return JSON.parse(initialData.images);
+    } catch {
+      // ignore
+    }
+    return [];
+  });
+
+  const imagesJson = useMemo(() => JSON.stringify(imageUrls), [imageUrls]);
+
+  useEffect(() => {
+    if (!initialData?.images) return;
+    try {
+      const parsed = JSON.parse(initialData.images);
+      if (Array.isArray(parsed)) setImageUrls(parsed);
+    } catch {
+      // ignore
+    }
+  }, [initialData?.images]);
+
+  async function handleUpload(file: File) {
+    setUploadError(null);
+    setIsUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+
+      const res = await fetch('/api/uploads/cos', {
+        method: 'POST',
+        body: fd,
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error ?? 'Upload failed');
+      }
+
+      if (!data?.url) {
+        throw new Error('Upload succeeded but missing url');
+      }
+
+      setImageUrls((prev) => {
+        if (prev.includes(data.url)) return prev;
+        return [...prev, data.url];
+      });
+    } catch (e: any) {
+      setUploadError(e?.message ?? 'Upload failed');
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  }
 
   return (
     <form action={async (formData) => {
@@ -51,8 +108,44 @@ export function ProductForm({ categories, initialData }: { categories: any[], in
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="images">图片链接 (JSON格式，暂时代替上传)</Label>
-        <Input id="images" name="images" defaultValue={initialData?.images} placeholder='["/images/product1.jpg"]' />
+        <Label htmlFor="images_upload">产品图片</Label>
+        <Input
+          ref={fileInputRef}
+          id="images_upload"
+          type="file"
+          accept="image/*"
+          disabled={isUploading}
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (!f) return;
+            void handleUpload(f);
+          }}
+        />
+
+        <input type="hidden" name="images" value={imagesJson} />
+
+        {uploadError && (
+          <p className="text-sm text-red-600">{uploadError}</p>
+        )}
+
+        {imageUrls.length > 0 && (
+          <div className="grid grid-cols-3 gap-3 pt-2">
+            {imageUrls.map((url) => (
+              <div key={url} className="border rounded-md p-2 space-y-2">
+                <img src={url} alt="product" className="w-full h-24 object-cover rounded" />
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => setImageUrls((prev) => prev.filter((u) => u !== url))}
+                  disabled={isUploading}
+                >
+                  删除
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="space-y-2">
