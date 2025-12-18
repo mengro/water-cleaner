@@ -1,9 +1,13 @@
 'use server'
 
-import { prisma } from "@/lib/prisma";
+import { dbDisabled, prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function deleteProduct(id: string) {
+  if (dbDisabled) {
+    revalidatePath('/admin/products');
+    return;
+  }
   await prisma.product.delete({
     where: { id }
   });
@@ -11,6 +15,10 @@ export async function deleteProduct(id: string) {
 }
 
 export async function togglePublish(id: string, currentState: boolean) {
+  if (dbDisabled) {
+    revalidatePath('/admin/products');
+    return;
+  }
   await prisma.product.update({
     where: { id },
     data: { isPublished: !currentState }
@@ -19,6 +27,10 @@ export async function togglePublish(id: string, currentState: boolean) {
 }
 
 export async function saveProduct(formData: FormData) {
+  if (dbDisabled) {
+    revalidatePath('/admin/products');
+    return;
+  }
   const id = formData.get('id') as string;
   const name = formData.get('name') as string;
   const description = formData.get('description') as string;

@@ -4,5 +4,4 @@
 process.env.HOSTNAME = '0.0.0.0'; // 必须是 0.0.0.0，不能是 localhost
 process.env.PORT = '9000';
 
-console.log('Starting Next.js Standalone Server on 0.0.0.0:9000');
 require('./server.js');
