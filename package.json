@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "sync:deploy": "node scripts/sync-deploy.mjs",
+    "postbuild": "node scripts/sync-deploy.mjs",
     "start": "next start",
     "lint": "eslint"
   },
