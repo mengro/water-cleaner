@@ -1,10 +1,13 @@
-import { prisma } from "@/lib/prisma";
+import { dbDisabled, prisma } from "@/lib/prisma";
 import { ProductForm } from "@/components/admin/product-form";
+import categoriesJson from "@/data/categories.json";
 
 export default async function NewProductPage() {
-  const categories = await prisma.category.findMany({
-    orderBy: { sortOrder: 'asc' }
-  });
+  const categories = dbDisabled
+    ? [...categoriesJson].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+    : await prisma.category.findMany({
+        orderBy: { sortOrder: 'asc' }
+      });
 
   return (
     <div>

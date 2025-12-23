@@ -10,6 +10,23 @@ const nextConfig: NextConfig = {
       ...codeInspectorPlugin({ bundler: 'turbopack' }),
     },
   },
+  images: {
+    contentDispositionType: 'inline', // 即使是图片也设为预览
+  },
+  // 强制全局响应头
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Content-Disposition',
+            value: 'inline', // 强制所有页面预览而非下载
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

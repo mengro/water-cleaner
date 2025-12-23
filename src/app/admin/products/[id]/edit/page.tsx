@@ -1,11 +1,21 @@
 import { dbDisabled, prisma } from "@/lib/prisma";
 import { ProductForm } from "@/components/admin/product-form";
 import { notFound } from "next/navigation";
+import categoriesJson from "@/data/categories.json";
 
-export default async function EditProductPage({ params }: { params: { id: string } }) {
+export default async function EditProductPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
   const [product, categories] = await Promise.all([
-    prisma.product.findUnique({ where: { id: params.id } }),
-    prisma.category.findMany({ orderBy: { sortOrder: 'asc' } })
+    prisma.product.findUnique({ where: { id } }),
+    dbDisabled
+      ? Promise.resolve(
+          [...categoriesJson].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+        )
+      : prisma.category.findMany({ orderBy: { sortOrder: 'asc' } })
   ]);
 
   if (!product && !dbDisabled) {

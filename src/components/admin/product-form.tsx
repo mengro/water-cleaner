@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,13 @@ import {
 import { saveProduct } from "@/app/admin/products/actions";
 import { useRouter } from "next/navigation";
 
-export function ProductForm({ categories, initialData }: { categories: any[], initialData?: any }) {
+export function ProductForm({
+  categories,
+  initialData,
+}: {
+  categories: any[];
+  initialData?: any;
+}) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -46,49 +52,62 @@ export function ProductForm({ categories, initialData }: { categories: any[], in
     setIsUploading(true);
     try {
       const fd = new FormData();
-      fd.append('file', file);
+      fd.append("file", file);
 
-      const res = await fetch('/api/uploads/cos', {
-        method: 'POST',
+      const res = await fetch("/api/uploads/cos", {
+        method: "POST",
         body: fd,
       });
 
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data?.error ?? 'Upload failed');
+        throw new Error(data?.error ?? "Upload failed");
       }
 
       if (!data?.url) {
-        throw new Error('Upload succeeded but missing url');
+        throw new Error("Upload succeeded but missing url");
       }
 
       setImageUrls((prev) => {
         if (prev.includes(data.url)) return prev;
         return [...prev, data.url];
       });
-    } catch (e: any) {
-      setUploadError(e?.message ?? 'Upload failed');
+    } catch (e: unknown) {
+      setUploadError(e instanceof Error ? e.message : "Upload failed");
     } finally {
       setIsUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = '';
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   }
 
   return (
-    <form action={async (formData) => {
-      await saveProduct(formData);
-      router.push('/admin/products');
-    }} className="space-y-6 max-w-2xl">
+    <form
+      action={async (formData) => {
+        await saveProduct(formData);
+        router.push("/admin/products");
+      }}
+      className="space-y-6 max-w-2xl"
+    >
       {initialData && <input type="hidden" name="id" value={initialData.id} />}
-      
+
       <div className="space-y-2">
         <Label htmlFor="name">产品名称</Label>
-        <Input id="name" name="name" defaultValue={initialData?.name} required placeholder="请输入产品名称" />
+        <Input
+          id="name"
+          name="name"
+          defaultValue={initialData?.name}
+          required
+          placeholder="请输入产品名称"
+        />
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="categoryId">所属分类</Label>
-        <Select name="categoryId" defaultValue={initialData?.categoryId} required>
+        <Select
+          name="categoryId"
+          defaultValue={initialData?.categoryId}
+          required
+        >
           <SelectTrigger>
             <SelectValue placeholder="选择分类" />
           </SelectTrigger>
@@ -104,7 +123,12 @@ export function ProductForm({ categories, initialData }: { categories: any[], in
 
       <div className="space-y-2">
         <Label htmlFor="description">简短描述</Label>
-        <Textarea id="description" name="description" defaultValue={initialData?.description} placeholder="用于列表页展示的简短介绍" />
+        <Textarea
+          id="description"
+          name="description"
+          defaultValue={initialData?.description}
+          placeholder="用于列表页展示的简短介绍"
+        />
       </div>
 
       <div className="space-y-2">
@@ -124,20 +148,24 @@ export function ProductForm({ categories, initialData }: { categories: any[], in
 
         <input type="hidden" name="images" value={imagesJson} />
 
-        {uploadError && (
-          <p className="text-sm text-red-600">{uploadError}</p>
-        )}
+        {uploadError && <p className="text-sm text-red-600">{uploadError}</p>}
 
         {imageUrls.length > 0 && (
           <div className="grid grid-cols-3 gap-3 pt-2">
             {imageUrls.map((url) => (
               <div key={url} className="border rounded-md p-2 space-y-2">
-                <img src={url} alt="product" className="w-full h-24 object-cover rounded" />
+                <img
+                  src={url}
+                  alt="product"
+                  className="w-full h-24 object-cover rounded"
+                />
                 <Button
                   type="button"
                   variant="outline"
                   className="w-full"
-                  onClick={() => setImageUrls((prev) => prev.filter((u) => u !== url))}
+                  onClick={() =>
+                    setImageUrls((prev) => prev.filter((u) => u !== url))
+                  }
                   disabled={isUploading}
                 >
                   删除
@@ -150,12 +178,20 @@ export function ProductForm({ categories, initialData }: { categories: any[], in
 
       <div className="space-y-2">
         <Label htmlFor="content">详细介绍 (Markdown)</Label>
-        <Textarea id="content" name="content" defaultValue={initialData?.content} className="min-h-[200px]" placeholder="支持 Markdown 格式的详细介绍" />
+        <Textarea
+          id="content"
+          name="content"
+          defaultValue={initialData?.content}
+          className="min-h-[200px]"
+          placeholder="支持 Markdown 格式的详细介绍"
+        />
       </div>
 
       <div className="flex gap-4">
         <Button type="submit">保存产品</Button>
-        <Button type="button" variant="outline" onClick={() => router.back()}>取消</Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>
+          取消
+        </Button>
       </div>
     </form>
   );

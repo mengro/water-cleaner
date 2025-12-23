@@ -1,0 +1,26 @@
+[
+  {
+    "id": "agents",
+    "name": "净水药剂",
+    "description": "高效絮凝，快速沉淀",
+    "sortOrder": 0
+  },
+  {
+    "id": "carbon",
+    "name": "活性炭系列",
+    "description": "强力吸附，深度净化",
+    "sortOrder": 10
+  },
+  {
+    "id": "filter-media",
+    "name": "滤料系列",
+    "description": "优质滤料，层层过滤",
+    "sortOrder": 20
+  },
+  {
+    "id": "fillers",
+    "name": "填料系列",
+    "description": "环保填料，提高效率",
+    "sortOrder": 30
+  }
+]
