@@ -55,6 +55,20 @@ function buildPublicUrl({ Bucket, Region, Key }: CosLocation): string {
   return `https://${Bucket}.cos.${Region}.myqcloud.com/${Key}`;
 }
 
+/**
+ * Extract the object key from a COS public URL
+ * @param url - COS public URL
+ * @returns The object key, or null if the URL is invalid
+ */
+function extractKeyFromUrl(url: string): string | null {
+  try {
+    const match = url.match(/\.cos\.[^/]+\.myqcloud\.com\/(.+)$/);
+    return match ? match[1] : null;
+  } catch {
+    return null;
+  }
+}
+
 async function putObject(
   location: CosLocation,
   body: Buffer | string,
@@ -68,9 +82,10 @@ async function putObject(
         Body: body,
         ContentType: contentType,
       },
-      (err: any) => {
+      (err: unknown) => {
         if (err) {
-          reject(new Error(`Failed to put object to COS: ${err.message || err}`));
+          const error = err as Error;
+          reject(new Error(`Failed to put object to COS: ${error.message || err}`));
           return;
         }
         resolve();
@@ -80,10 +95,11 @@ async function putObject(
 }
 
 async function getObject(location: CosLocation): Promise<Buffer> {
-  const data = await new Promise<any>((resolve, reject) => {
-    cos.getObject(location, (err: any, data: any) => {
+  const data = await new Promise<{ Body?: Buffer | string }>((resolve, reject) => {
+    cos.getObject(location, (err: unknown, data: { Body?: Buffer | string }) => {
       if (err) {
-        reject(new Error(`Failed to get object from COS: ${err.message || err}`));
+        const error = err as Error;
+        reject(new Error(`Failed to get object from COS: ${error.message || err}`));
         return;
       }
       resolve(data);
@@ -96,6 +112,26 @@ async function getObject(location: CosLocation): Promise<Buffer> {
   }
 
   return Buffer.isBuffer(body) ? body : Buffer.from(body);
+}
+
+function getObjectUrl(location: CosLocation, expiresInSeconds: number = 3600): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    cos.getObjectUrl(
+      {
+        ...location,
+        Sign: true,
+        Expires: expiresInSeconds,
+      },
+      (err: unknown, data: { Url: string }) => {
+        if (err) {
+          const error = err as Error;
+          reject(new Error(`Failed to generate signed URL: ${error.message || err}`));
+          return;
+        }
+        resolve(data.Url);
+      }
+    );
+  });
 }
 
 // ============================================================================
@@ -130,6 +166,16 @@ export async function writeConfigJson(key: string, data: unknown): Promise<{ key
     key: location.Key,
     url: buildPublicUrl(location),
   };
+}
+
+/**
+ * Get a signed URL for a configuration file (for private read access)
+ * @param key - The file key in the settings bucket
+ * @param expiresInSeconds - URL expiration time in seconds (default: 1 hour)
+ */
+export async function getConfigSignedUrl(key: string, expiresInSeconds: number = 3600): Promise<string> {
+  const location = buildCosLocation(COS_SETTING_BUCKET!, key);
+  return await getObjectUrl(location, expiresInSeconds);
 }
 
 // ============================================================================
@@ -167,6 +213,57 @@ export async function uploadStaticFile({
 export async function downloadStaticFile(key: string): Promise<Buffer> {
   const location = buildCosLocation(COS_STATIC_BUCKET!, key);
   return await getObject(location);
+}
+
+/**
+ * Get a signed URL for a static file (for private read access)
+ * @param key - The file key in the static bucket
+ * @param expiresInSeconds - URL expiration time in seconds (default: 1 hour)
+ */
+export async function getStaticFileSignedUrl(key: string, expiresInSeconds: number = 3600): Promise<string> {
+  const location = buildCosLocation(COS_STATIC_BUCKET!, key);
+  return await getObjectUrl(location, expiresInSeconds);
+}
+
+/**
+ * Batch get signed URLs for multiple static files
+ * @param keys - Array of file keys in the static bucket
+ * @param expiresInSeconds - URL expiration time in seconds (default: 1 hour)
+ */
+export async function batchGetStaticFileSignedUrls(
+  keys: string[],
+  expiresInSeconds: number = 3600
+): Promise<Record<string, string>> {
+  const results = await Promise.all(
+    keys.map(async (key) => {
+      const url = await getStaticFileSignedUrl(key, expiresInSeconds);
+      return { key, url };
+    })
+  );
+  
+  return Object.fromEntries(results.map(({ key, url }) => [key, url]));
+}
+
+/**
+ * Convert public COS URLs to signed URLs (for images stored in products, etc.)
+ * @param urls - Array of public COS URLs
+ * @param expiresInSeconds - URL expiration time in seconds (default: 1 hour)
+ * @returns Array of signed URLs in the same order as input
+ */
+export async function convertToSignedUrls(
+  urls: string[],
+  expiresInSeconds: number = 3600
+): Promise<string[]> {
+  return await Promise.all(
+    urls.map(async (url) => {
+      const key = extractKeyFromUrl(url);
+      if (!key) {
+        // If not a valid COS URL, return as-is
+        return url;
+      }
+      return await getStaticFileSignedUrl(key, expiresInSeconds);
+    })
+  );
 }
 
 // ============================================================================

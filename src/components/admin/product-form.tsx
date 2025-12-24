@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { saveProduct } from "@/app/admin/products/actions";
 import { useRouter } from "next/navigation";
+import { CosImage } from "@/components/ui/cos-image";
 
 export function ProductForm({
   categories,
@@ -156,7 +157,7 @@ export function ProductForm({
           <div className="grid grid-cols-3 gap-3 pt-2">
             {imageUrls.map((url) => (
               <div key={url} className="border rounded-md p-2 space-y-2">
-                <img
+                <CosImage
                   src={url}
                   alt="product"
                   className="w-full h-24 object-cover rounded"

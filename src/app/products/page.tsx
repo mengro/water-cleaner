@@ -1,17 +1,20 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { prisma } from "@/lib/prisma"
 import Link from "next/link"
+import { getAllProducts } from "@/lib/products"
+import categoriesJson from "@/data/categories.json"
 
 export default async function ProductsPage() {
-  const categories = await prisma.category.findMany({
-    include: {
-      products: {
-        where: { isPublished: true },
-        orderBy: { sortOrder: 'asc' }
-      }
-    },
-    orderBy: { sortOrder: 'asc' }
-  });
+  const allProducts = await getAllProducts();
+  const publishedProducts = allProducts.filter(p => p.isPublished);
+  
+  const categories = categoriesJson
+    .map(category => ({
+      ...category,
+      products: publishedProducts
+        .filter(p => p.categoryId === category.id)
+        .sort((a, b) => a.sortOrder - b.sortOrder)
+    }))
+    .sort((a, b) => a.sortOrder - b.sortOrder);
 
   return (
     <div className="container mx-auto py-12 px-4">

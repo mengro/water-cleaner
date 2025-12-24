@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Trash2, Eye, EyeOff, Pencil } from "lucide-react";
 import { deleteProduct, togglePublish } from "./actions";
 import Link from "next/link";
+import type { Product } from "@/lib/products";
 
-export function ProductRowActions({ product }: { product: any }) {
+export function ProductRowActions({ product }: { product: Product }) {
   return (
     <div className="flex items-center gap-2">
       <Button variant="ghost" size="icon" asChild>
@@ -15,7 +16,7 @@ export function ProductRowActions({ product }: { product: any }) {
       </Button>
       
       <form action={async () => {
-        await togglePublish(product.id, product.isPublished);
+        await togglePublish(product.id);
       }}>
         <Button variant="ghost" size="icon" type="submit" title={product.isPublished ? "下架" : "发布"}>
           {product.isPublished ? <Eye className="h-4 w-4 text-green-600" /> : <EyeOff className="h-4 w-4 text-slate-400" />}

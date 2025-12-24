@@ -1,20 +1,70 @@
-import { prisma } from "@/lib/prisma"
+"use client";
+
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, CheckCircle2 } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import ReactMarkdown from "react-markdown"
+import categoriesJson from "@/data/categories.json"
+import { CosImage } from "@/components/ui/cos-image"
+import { useEffect, useState } from "react"
+import type { Product } from "@/lib/products"
 
-export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const product = await prisma.product.findUnique({
-    where: { id },
-    include: { category: true }
-  });
+export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
+  const [id, setId] = useState<string | null>(null);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    params.then(p => setId(p.id));
+  }, [params]);
+
+  useEffect(() => {
+    if (!id) return;
+
+    async function loadProduct() {
+      try {
+        const response = await fetch(`/api/products/${id}`);
+        if (!response.ok) {
+          setProduct(null);
+          return;
+        }
+        const data = await response.json();
+        setProduct(data);
+      } catch (error) {
+        console.error('Failed to load product:', error);
+        setProduct(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    void loadProduct();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="container mx-auto py-12 px-4">
+        <div className="animate-pulse">
+          <div className="h-8 bg-slate-200 rounded w-32 mb-8"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div className="bg-slate-200 rounded-lg aspect-square"></div>
+            <div className="space-y-4">
+              <div className="h-8 bg-slate-200 rounded w-24"></div>
+              <div className="h-12 bg-slate-200 rounded w-3/4"></div>
+              <div className="h-6 bg-slate-200 rounded w-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!product || !product.isPublished) {
     notFound();
   }
+
+  const category = categoriesJson.find(cat => cat.id === product.categoryId);
 
   return (
     <div className="container mx-auto py-12 px-4">
@@ -28,13 +78,12 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Product Image Placeholder */}
+        {/* Product Image */}
         <div className="bg-slate-100 rounded-lg aspect-square flex items-center justify-center text-slate-400">
-          {product.images ? (
-             // eslint-disable-next-line @next/next/no-img-element
-            <img 
-              src={JSON.parse(product.images)[0]} 
-              alt={product.name} 
+          {product.images && product.images.length > 0 ? (
+            <CosImage
+              src={product.images[0]}
+              alt={product.name}
               className="w-full h-full object-cover rounded-lg"
             />
           ) : (
@@ -46,7 +95,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         <div>
           <div className="mb-6">
             <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-              {product.category.name}
+              {category?.name || '未分类'}
             </span>
             <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
             <p className="text-xl text-muted-foreground">
