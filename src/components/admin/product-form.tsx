@@ -19,18 +19,23 @@ export function ProductForm({
   categories,
   initialData,
 }: {
-  categories: any[];
-  initialData?: any;
+  categories: { id: string; name: string; sortOrder?: number }[];
+  initialData?: {
+    id: string;
+    name: string;
+    categoryId: string;
+    description?: string;
+    content?: string;
+    images?: string[];
+  };
 }) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [imageUrls, setImageUrls] = useState<string[]>(() => {
-    try {
-      if (initialData?.images) return JSON.parse(initialData.images);
-    } catch {
-      // ignore
+    if (initialData?.images && Array.isArray(initialData.images)) {
+      return initialData.images;
     }
     return [];
   });
@@ -39,11 +44,8 @@ export function ProductForm({
 
   useEffect(() => {
     if (!initialData?.images) return;
-    try {
-      const parsed = JSON.parse(initialData.images);
-      if (Array.isArray(parsed)) setImageUrls(parsed);
-    } catch {
-      // ignore
+    if (Array.isArray(initialData.images)) {
+      setImageUrls(initialData.images);
     }
   }, [initialData?.images]);
 

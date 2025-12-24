@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -11,12 +10,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ProductRowActions } from "./product-row-actions";
+import { getAllProducts } from "@/lib/products";
+import categoriesJson from "@/data/categories.json";
 
 export default async function ProductsPage() {
-  const products = await prisma.product.findMany({
-    include: { category: true },
-    orderBy: { createdAt: 'desc' }
-  });
+  const products = await getAllProducts();
+  
+  const categoryMap = new Map(
+    categoriesJson.map(cat => [cat.id, cat])
+  );
 
   return (
     <div>
@@ -42,10 +44,10 @@ export default async function ProductsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {products.map((product: any) => (
+            {products.map((product) => (
               <TableRow key={product.id}>
                 <TableCell className="font-medium">{product.name}</TableCell>
-                <TableCell>{product.category.name}</TableCell>
+                <TableCell>{categoryMap.get(product.categoryId)?.name || '-'}</TableCell>
                 <TableCell>
                   {product.isPublished ? (
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -57,7 +59,7 @@ export default async function ProductsPage() {
                     </span>
                   )}
                 </TableCell>
-                <TableCell>{product.createdAt.toLocaleDateString('zh-CN')}</TableCell>
+                <TableCell>{new Date(product.createdAt).toLocaleDateString('zh-CN')}</TableCell>
                 <TableCell className="text-right">
                   <ProductRowActions product={product} />
                 </TableCell>

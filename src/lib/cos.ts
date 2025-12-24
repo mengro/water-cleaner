@@ -2,14 +2,14 @@ import COS from 'cos-nodejs-sdk-v5';
 
 // Environment variables
 const {
-  SecretId,
-  SecretKey,
+  COS_SECRET_ID,
+  COS_SECRET_KEY,
   COS_SETTING_BUCKET,
   COS_STATIC_BUCKET,
   COS_REGION,
 } = process.env;
 
-if (!SecretId || !SecretKey) {
+if (!COS_SECRET_ID || !COS_SECRET_KEY) {
   throw new Error('Missing COS credentials: SecretId or SecretKey');
 }
 
@@ -19,8 +19,8 @@ if (!COS_SETTING_BUCKET || !COS_STATIC_BUCKET || !COS_REGION) {
 
 // Initialize COS client
 const cos = new COS({
-  SecretId,
-  SecretKey,
+  SecretId: COS_SECRET_ID,
+  SecretKey: COS_SECRET_KEY,
 });
 
 // ============================================================================
@@ -64,7 +64,7 @@ async function putObject(
     cos.putObject(
       {
         ...location,
-        StorageClass: 'MAZ_STANDARD',
+        StorageClass: 'STANDARD',
         Body: body,
         ContentType: contentType,
       },
