@@ -2,7 +2,8 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Package, Settings, Home } from "lucide-react";
+import { LayoutDashboard, Package, Settings, Home, LogOut } from "lucide-react";
+import { handleSignOut } from "@/app/lib/actions";
 
 export default async function AdminLayout({
   children,
@@ -47,6 +48,16 @@ export default async function AdminLayout({
                 返回首页
               </Link>
             </Button>
+            <form action={handleSignOut}>
+              <Button 
+                type="submit" 
+                variant="ghost" 
+                className="w-full justify-start text-slate-300 hover:text-white hover:bg-slate-800"
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                退出登录
+              </Button>
+            </form>
           </div>
         </nav>
       </aside>
