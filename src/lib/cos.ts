@@ -10,11 +10,11 @@ const {
 } = process.env;
 
 if (!COS_SECRET_ID || !COS_SECRET_KEY) {
-  throw new Error('Missing COS credentials: SecretId or SecretKey');
+  console.warn('Missing COS credentials: SecretId or SecretKey');
 }
 
 if (!COS_SETTING_BUCKET || !COS_STATIC_BUCKET || !COS_REGION) {
-  throw new Error('Missing COS bucket configuration: COS_SETTING_BUCKET, COS_STATIC_BUCKET, or COS_REGION');
+  console.warn('Missing COS bucket configuration: COS_SETTING_BUCKET, COS_STATIC_BUCKET, or COS_REGION');
 }
 
 // Initialize COS client
