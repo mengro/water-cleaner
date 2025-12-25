@@ -192,11 +192,15 @@ export async function uploadStaticFile({
 }: UploadStaticFileOptions): Promise<{ key: string; url: string }> {
   // Sanitize filename and extract extension
   const safeFilename = filename.replace(/[^a-zA-Z0-9._-]/g, '_');
-  const ext = safeFilename.includes('.') ? safeFilename.split('.').pop() : undefined;
+  const ext = safeFilename.includes('.') ? safeFilename.split('.').pop() : '';
+  const nameWithoutExt = safeFilename.includes('.') 
+    ? safeFilename.substring(0, safeFilename.lastIndexOf('.'))
+    : safeFilename;
   
-  // Generate unique key with date-based organization
+  // Generate unique key with date-based organization and timestamp
   const date = new Date().toISOString().slice(0, 10);
-  const key = `uploads/${date}/${ext ? `.${ext}` : ''}`;
+  const timestamp = Date.now();
+  const key = `uploads/${date}/${nameWithoutExt}_${timestamp}${ext ? `.${ext}` : ''}`;
   
   const location = buildCosLocation(COS_STATIC_BUCKET!, key);
   await putObject(location, buffer, contentType);
