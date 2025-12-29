@@ -1,5 +1,8 @@
+"use client"
+
 import Link from "next/link"
 import { Menu, Phone } from "lucide-react"
+import { useEffect, useState, useRef } from "react"
 
 import { navLinks } from "@/config"
 import { Button } from "@/components/ui/button"
@@ -10,12 +13,39 @@ import {
 } from "@/components/ui/sheet"
 
 export function SiteHeader({ siteConfig }: { siteConfig: any }) {
+  const [isScrolled, setIsScrolled] = useState(false)
+  const sentinelRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current
+    if (!sentinel) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // 当哨兵元素不可见时，说明页面已滚动
+        setIsScrolled(!entry.isIntersecting)
+      },
+      { threshold: 0 }
+    )
+
+    observer.observe(sentinel)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/100">
+    <>
+      {/* 哨兵元素：用于检测页面滚动状态 */}
+      <div ref={sentinelRef} className="absolute top-0 h-px w-full pointer-events-none" aria-hidden="true" />
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/100">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-primary">{siteConfig.brandName}</span>
+            <span className={`text-xl font-bold transition-colors duration-200 ${isScrolled ? 'text-white' : 'text-primary'}`}>
+              {siteConfig.brandName}
+            </span>
           </Link>
         </div>
 
@@ -71,5 +101,6 @@ export function SiteHeader({ siteConfig }: { siteConfig: any }) {
         </div>
       </div>
     </header>
+    </>
   )
 }
