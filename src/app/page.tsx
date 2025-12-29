@@ -3,12 +3,12 @@ import { ArrowRight, CheckCircle2, Factory, ShieldCheck, Truck } from "lucide-re
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import siteConfigData from "@/config/site-config.json"
+import { getSiteConfig } from "@/lib/site-config"
 import categoriesData from "@/data/categories.json"
 import { getAllProducts, type Product } from "@/lib/products"
 
 export default async function Home() {
-  const config = siteConfigData;
+  const config = await getSiteConfig();
   const allProducts = await getAllProducts();
   const publishedProducts = allProducts.filter(p => p.isPublished);
   

@@ -1,13 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllProducts } from "@/lib/products";
 import categoriesData from "@/data/categories.json";
-import siteConfigData from "@/config/site-config.json";
+import { getSiteConfig } from "@/lib/site-config";
 
 export default async function AdminDashboard() {
   const products = await getAllProducts();
   const productCount = products.length;
   const categoryCount = categoriesData.length;
-  const config = siteConfigData;
+  const config = await getSiteConfig();
 
   return (
     <div className="container mx-auto py-10">

@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { Menu, Phone } from "lucide-react"
 import { useEffect, useState, useRef } from "react"
+import type { SiteConfig } from "@/lib/site-config"
 
 import { navLinks } from "@/config"
 import { Button } from "@/components/ui/button"
@@ -12,7 +13,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 
-export function SiteHeader({ siteConfig }: { siteConfig: any }) {
+export function SiteHeader({ siteConfig }: { siteConfig: SiteConfig }) {
   const [isScrolled, setIsScrolled] = useState(false)
   const sentinelRef = useRef<HTMLDivElement>(null)
 
@@ -43,7 +44,13 @@ export function SiteHeader({ siteConfig }: { siteConfig: any }) {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center space-x-2">
-            <span className={`text-xl font-bold transition-colors duration-200 ${isScrolled ? 'text-white' : 'text-primary'}`}>
+            <span 
+              className={`text-xl font-bold transition-all duration-200 ${
+                isScrolled 
+                  ? 'text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]' 
+                  : 'text-primary'
+              }`}
+            >
               {siteConfig.brandName}
             </span>
           </Link>

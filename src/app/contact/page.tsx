@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import siteConfigData from "@/config/site-config.json"
+import { getSiteConfig } from "@/lib/site-config"
 
 export default async function ContactPage() {
-  const config = siteConfigData;
+  const config = await getSiteConfig();
 
   return (
     <div className="container mx-auto py-12 px-4">

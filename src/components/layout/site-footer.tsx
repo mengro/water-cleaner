@@ -1,9 +1,8 @@
 import Link from "next/link"
 import { navLinks } from "@/config"
-import type siteConfigData from "@/config/site-config.json"
+import type { SiteConfig } from "@/lib/site-config"
 import type categoriesData from "@/data/categories.json"
 
-type SiteConfig = typeof siteConfigData;
 type Category = typeof categoriesData[0];
 
 export function SiteFooter({ siteConfig, categories }: { siteConfig: SiteConfig, categories: Category[] }) {

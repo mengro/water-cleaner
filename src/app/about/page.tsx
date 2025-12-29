@@ -1,8 +1,8 @@
-import siteConfigData from "@/config/site-config.json"
+import { getSiteConfig } from "@/lib/site-config"
 import ReactMarkdown from "react-markdown"
 
 export default async function AboutPage() {
-  const config = siteConfigData;
+  const config = await getSiteConfig();
 
   return (
     <div className="container mx-auto py-12 px-4">
