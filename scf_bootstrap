@@ -1,7 +1,0 @@
-#!/var/lang/node20/bin/node
-
-// scf_bootstrap 中
-process.env.HOSTNAME = '0.0.0.0'; // 必须是 0.0.0.0，不能是 localhost
-process.env.PORT = '9000';
-
-require('./server.js');
