@@ -1,10 +1,13 @@
-import { prisma } from "@/lib/prisma";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getAllProducts } from "@/lib/products";
+import categoriesData from "@/data/categories.json";
+import siteConfigData from "@/config/site-config.json";
 
 export default async function AdminDashboard() {
-  const productCount = await prisma.product.count();
-  const categoryCount = await prisma.category.count();
-  const config = await prisma.siteConfig.findUnique({ where: { id: "default" } });
+  const products = await getAllProducts();
+  const productCount = products.length;
+  const categoryCount = categoriesData.length;
+  const config = siteConfigData;
 
   return (
     <div className="container mx-auto py-10">

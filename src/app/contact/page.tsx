@@ -1,17 +1,10 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { prisma } from "@/lib/prisma"
+import siteConfigData from "@/config/site-config.json"
 
 export default async function ContactPage() {
-  const siteConfig = await prisma.siteConfig.findUnique({ where: { id: "default" } });
-  
-  const config = siteConfig || {
-    tel: "",
-    contact: "",
-    email: "",
-    address: ""
-  };
+  const config = siteConfigData;
 
   return (
     <div className="container mx-auto py-12 px-4">

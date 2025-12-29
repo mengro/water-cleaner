@@ -3,14 +3,14 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
-import { prisma } from "@/lib/prisma";
+import siteConfigData from "@/config/site-config.json";
+import categoriesData from "@/data/categories.json";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const config = await prisma.siteConfig.findUnique({ where: { id: "default" } });
   return {
-    title: `${config?.brandName || "康备尔净水"} - 专业净水材料供应商`,
+    title: `${siteConfigData.brandName} - 专业净水材料供应商`,
     description: "提供优质聚氯化铝、聚丙烯酰胺、活性炭等水处理材料。专注水处理20年。",
   };
 }
@@ -20,22 +20,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [siteConfig, categories] = await Promise.all([
-    prisma.siteConfig.findUnique({ where: { id: "default" } }),
-    prisma.category.findMany({ 
-      include: { products: { take: 5 } },
-      orderBy: { sortOrder: 'asc' }
-    })
-  ]);
-
-  const config = siteConfig || {
-    brandName: "康备尔净水",
-    companyName: "杭州康备尔设计咨询有限公司",
-    tel: "",
-    contact: "",
-    email: "",
-    address: ""
-  };
+  const config = siteConfigData;
+  const categories = categoriesData;
 
   return (
     <html lang="zh-CN">

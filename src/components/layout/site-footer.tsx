@@ -1,7 +1,12 @@
 import Link from "next/link"
 import { navLinks } from "@/config"
+import type siteConfigData from "@/config/site-config.json"
+import type categoriesData from "@/data/categories.json"
 
-export function SiteFooter({ siteConfig, categories }: { siteConfig: any, categories: any[] }) {
+type SiteConfig = typeof siteConfigData;
+type Category = typeof categoriesData[0];
+
+export function SiteFooter({ siteConfig, categories }: { siteConfig: SiteConfig, categories: Category[] }) {
   return (
     <footer className="bg-slate-800 text-slate-200">
       <div className="container mx-auto py-12 px-4">
@@ -40,16 +45,10 @@ export function SiteFooter({ siteConfig, categories }: { siteConfig: any, catego
             <div className="grid grid-cols-2 gap-4 text-sm">
               {categories.map((category) => (
                 <div key={category.id}>
-                  <h5 className="font-medium text-white mb-2">{category.name}</h5>
-                  <ul className="space-y-1 text-slate-300">
-                    {category.products.slice(0, 3).map((product) => (
-                      <li key={product.id}>
-                        <Link href={`/products?category=${category.id}`} className="hover:text-white transition-colors">
-                          {product.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                  <Link href={`/products?category=${category.id}`} className="font-medium text-white mb-2 hover:text-slate-300 transition-colors block">
+                    {category.name}
+                  </Link>
+                  <p className="text-slate-400 text-xs">{category.description}</p>
                 </div>
               ))}
             </div>

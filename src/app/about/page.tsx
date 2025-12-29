@@ -1,20 +1,15 @@
-import { prisma } from "@/lib/prisma"
+import siteConfigData from "@/config/site-config.json"
 import ReactMarkdown from "react-markdown"
 
 export default async function AboutPage() {
-  const siteConfig = await prisma.siteConfig.findUnique({ where: { id: "default" } });
-  
-  const config = siteConfig || {
-    companyName: "杭州康备尔设计咨询有限公司",
-    aboutUs: "暂无介绍"
-  };
+  const config = siteConfigData;
 
   return (
     <div className="container mx-auto py-12 px-4">
       <h1 className="text-3xl font-bold mb-8">关于我们</h1>
       <div className="prose max-w-none text-slate-700 leading-relaxed space-y-6">
-        {siteConfig?.aboutUs ? (
-          <ReactMarkdown>{siteConfig.aboutUs}</ReactMarkdown>
+        {config.aboutUs ? (
+          <ReactMarkdown>{config.aboutUs}</ReactMarkdown>
         ) : (
           <>
             <p>

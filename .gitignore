@@ -45,3 +45,5 @@ next-env.d.ts
 *.zip
 nodejs/
 deploy/
+
+*.tar

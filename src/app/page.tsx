@@ -3,21 +3,24 @@ import { ArrowRight, CheckCircle2, Factory, ShieldCheck, Truck } from "lucide-re
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { prisma } from "@/lib/prisma"
+import siteConfigData from "@/config/site-config.json"
+import categoriesData from "@/data/categories.json"
+import { getAllProducts, type Product } from "@/lib/products"
 
 export default async function Home() {
-  const [siteConfig, categories] = await Promise.all([
-    prisma.siteConfig.findUnique({ where: { id: "default" } }),
-    prisma.category.findMany({ 
-      include: { products: { take: 3 } },
-      orderBy: { sortOrder: 'asc' }
-    })
-  ]);
-
-  const config = siteConfig || {
-    brandName: "康备尔净水",
-    companyName: "杭州康备尔设计咨询有限公司"
-  };
+  const config = siteConfigData;
+  const allProducts = await getAllProducts();
+  const publishedProducts = allProducts.filter(p => p.isPublished);
+  
+  type CategoryWithProducts = typeof categoriesData[0] & { products: Product[] };
+  
+  const categories: CategoryWithProducts[] = categoriesData.map(category => ({
+    ...category,
+    products: publishedProducts
+      .filter(p => p.categoryId === category.id)
+      .slice(0, 3)
+      .sort((a, b) => a.sortOrder - b.sortOrder)
+  })).sort((a, b) => a.sortOrder - b.sortOrder);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -26,17 +29,29 @@ export default async function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-cyan-600/20" />
         <div className="container relative mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-6">
-            专业水处理材料<br className="md:hidden" />一站式供应商
+            专业水处理材料
+            <br className="md:hidden" />
+            一站式供应商
           </h1>
           <p className="text-lg md:text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
             专注净水领域20年，提供聚氯化铝、活性炭、滤料等全系列水处理产品。
             源头工厂，品质保证。
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center px-8 sm:px-0">
-            <Button size="lg" asChild className="text-lg h-12 px-8">
+            <Button
+              size="lg"
+              variant="outline"
+              asChild
+              className="text-lg h-12 px-8 bg-transparent text-white border-white hover:bg-white/10 hover:text-white"
+            >
               <Link href="/products">浏览产品</Link>
             </Button>
-            <Button size="lg" variant="outline" asChild className="text-lg h-12 px-8 bg-transparent text-white border-white hover:bg-white/10 hover:text-white">
+            <Button
+              size="lg"
+              variant="outline"
+              asChild
+              className="text-lg h-12 px-8 bg-transparent text-white border-white hover:bg-white/10 hover:text-white"
+            >
               <Link href="/contact">联系我们</Link>
             </Button>
           </div>
@@ -93,10 +108,14 @@ export default async function Home() {
               我们提供全方位的水处理解决方案，满足工业废水、生活饮用水等多种场景需求。
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {categories.map((category: any) => (
-              <Link key={category.id} href={`/products?category=${category.id}`} className="group">
+            {categories.map((category) => (
+              <Link
+                key={category.id}
+                href={`/products?category=${category.id}`}
+                className="group"
+              >
                 <Card className="h-full transition-all hover:shadow-lg hover:border-primary/50">
                   <CardHeader>
                     <CardTitle className="group-hover:text-primary transition-colors">
@@ -108,8 +127,11 @@ export default async function Home() {
                       {category.description}
                     </p>
                     <ul className="space-y-2">
-                      {category.products.map((product: any) => (
-                        <li key={product.id} className="flex items-center text-sm text-slate-600">
+                      {category.products.map((product) => (
+                        <li
+                          key={product.id}
+                          className="flex items-center text-sm text-slate-600"
+                        >
                           <CheckCircle2 className="h-3 w-3 mr-2 text-primary/60" />
                           {product.name}
                         </li>
@@ -120,7 +142,7 @@ export default async function Home() {
               </Link>
             ))}
           </div>
-          
+
           <div className="text-center mt-12">
             <Button variant="outline" size="lg" asChild>
               <Link href="/products" className="group">
@@ -137,9 +159,12 @@ export default async function Home() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold mb-6 text-white">关于 {config.brandName}</h2>
+              <h2 className="text-3xl font-bold mb-6 text-white">
+                关于 {config.brandName}
+              </h2>
               <p className="text-slate-200 mb-6 leading-relaxed">
-                {config.companyName}集科研、生产、经营、服务于一体，是从事水处理剂的开发、生产、经营及从事水处理工程的设计、研发、运营及各类废水，噪音治理的专业企业。
+                {config.companyName}
+                集科研、生产、经营、服务于一体，是从事水处理剂的开发、生产、经营及从事水处理工程的设计、研发、运营及各类废水，噪音治理的专业企业。
               </p>
               <p className="text-slate-200 mb-8 leading-relaxed">
                 本公司与多所高等院校及化工科研单位合作，研制生产出“田邦”“中禹”牌絮凝剂系列产品：聚氯化铝、聚氯化铝铁等，并提供聚丙烯酰胺和具有阻垢、分散、缓蚀、杀菌、除油，混凝等多种性能的几十种药剂。
@@ -159,5 +184,5 @@ export default async function Home() {
         </div>
       </section>
     </div>
-  )
+  );
 }
