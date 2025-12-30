@@ -2,8 +2,28 @@
 
 import { revalidatePath } from "next/cache";
 import { updateSiteConfig } from "@/lib/site-config";
+import { auth } from "@/auth";
+
+// Security helper: verify admin authentication
+async function requireAuth() {
+  let session;
+  try {
+    session = await auth();
+  } catch (error) {
+    console.error("[Security] Auth error in settings actions:", error);
+    throw new Error("Authentication failed");
+  }
+  
+  if (!session || !session.user) {
+    console.warn("[Security] Unauthorized settings action attempt");
+    throw new Error("Unauthorized");
+  }
+  
+  return session;
+}
 
 export async function saveSiteConfig(formData: FormData) {
+  await requireAuth();
   const brandName = formData.get('brandName') as string;
   const companyName = formData.get('companyName') as string;
   const tel = formData.get('tel') as string;

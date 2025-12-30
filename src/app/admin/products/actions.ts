@@ -7,18 +7,40 @@ import {
   deleteProduct as deleteProductData,
   toggleProductPublish as toggleProductPublishData 
 } from "@/lib/products";
+import { auth } from "@/auth";
+
+// Security helper: verify admin authentication
+async function requireAuth() {
+  let session;
+  try {
+    session = await auth();
+  } catch (error) {
+    console.error("[Security] Auth error in product actions:", error);
+    throw new Error("Authentication failed");
+  }
+  
+  if (!session || !session.user) {
+    console.warn("[Security] Unauthorized action attempt");
+    throw new Error("Unauthorized");
+  }
+  
+  return session;
+}
 
 export async function deleteProduct(id: string) {
+  await requireAuth();
   await deleteProductData(id);
   revalidatePath('/admin/products');
 }
 
 export async function togglePublish(id: string) {
+  await requireAuth();
   await toggleProductPublishData(id);
   revalidatePath('/admin/products');
 }
 
 export async function saveProduct(formData: FormData) {
+  await requireAuth();
   const id = formData.get('id') as string;
   const name = formData.get('name') as string;
   const description = formData.get('description') as string;

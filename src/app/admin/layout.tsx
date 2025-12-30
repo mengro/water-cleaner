@@ -5,13 +5,27 @@ import { Button } from "@/components/ui/button";
 import { LayoutDashboard, Package, Settings, Home, LogOut } from "lucide-react";
 import { handleSignOut } from "@/app/lib/actions";
 
+// Force dynamic rendering for admin routes
+export const dynamic = 'force-dynamic';
+
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-  if (!session) {
+  // Fail-safe authentication check
+  let session;
+  try {
+    session = await auth();
+  } catch (error) {
+    console.error("[Security] Auth error in admin layout:", error);
+    // CRITICAL: On error, deny access (fail-closed)
+    redirect("/login?error=auth_error");
+  }
+  
+  // Verify session exists and has valid user
+  if (!session || !session.user) {
+    console.warn("[Security] No valid session in admin layout");
     redirect("/login");
   }
 

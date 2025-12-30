@@ -4,7 +4,6 @@ import path from 'node:path';
 const projectRoot = path.resolve(process.cwd());
 const deployDir = path.join(projectRoot, 'deploy');
 
-const rootScfBootstrap = path.join(projectRoot, 'scf_bootstrap');
 const rootPublic = path.join(projectRoot, 'public');
 const rootNextStatic = path.join(projectRoot, '.next', 'static');
 
@@ -48,9 +47,6 @@ async function main() {
   }
 
   await ensureDir(deployDir);
-
-  await copyFile(rootScfBootstrap, path.join(deployDir, 'scf_bootstrap'));
-  await fs.chmod(path.join(deployDir, 'scf_bootstrap'), 0o755);
 
   await emptyDir(path.join(deployDir, 'public'));
   await copyDir(rootPublic, path.join(deployDir, 'public'));
