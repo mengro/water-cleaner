@@ -1,8 +1,10 @@
 import Link from "next/link"
-import { ArrowRight, CheckCircle2, Factory, ShieldCheck, Truck } from "lucide-react"
+import { ArrowRight, CheckCircle2, Factory, ShieldCheck, Truck, Package } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { CosImage } from "@/components/ui/cos-image"
 import { getSiteConfig } from "@/lib/site-config"
 import categoriesData from "@/data/categories.json"
 import { getAllProducts, type Product } from "@/lib/products"
@@ -111,34 +113,63 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {categories.map((category) => (
               <Link
                 key={category.id}
                 href={`/products?category=${category.id}`}
                 className="group"
               >
-                <Card className="h-full transition-all hover:shadow-lg hover:border-primary/50 active:scale-[0.98]">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-base sm:text-lg group-hover:text-primary transition-colors">
-                      {category.name}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-2">
+                <Card className="h-full transition-all hover:shadow-md hover:border-primary/30 active:scale-[0.98] overflow-hidden">
+                  <CardHeader className="p-4 pb-3 border-b bg-gradient-to-br from-slate-50/50 to-transparent">
+                    <div className="flex items-center justify-between gap-2">
+                      <CardTitle className="text-base group-hover:text-primary transition-colors line-clamp-1 flex-1">
+                        {category.name}
+                      </CardTitle>
+                      <Badge variant="secondary" className="text-xs shrink-0">
+                        {category.products.length}
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-muted-foreground line-clamp-2 mt-1.5">
                       {category.description}
                     </p>
-                    <ul className="space-y-1.5 sm:space-y-2">
-                      {category.products.map((product) => (
-                        <li
-                          key={product.id}
-                          className="flex items-center text-xs sm:text-sm text-slate-600"
-                        >
-                          <CheckCircle2 className="h-3 w-3 mr-1.5 sm:mr-2 text-primary/60 flex-shrink-0" />
-                          <span className="truncate">{product.name}</span>
-                        </li>
-                      ))}
-                    </ul>
+                  </CardHeader>
+                  <CardContent className="p-3 space-y-2">
+                    {/* 产品列表 - 最多显示3个 */}
+                    {category.products.slice(0, 3).map((product) => (
+                      <div
+                        key={product.id}
+                        className="flex items-center gap-3 p-2 rounded hover:bg-slate-50 transition-colors group/item"
+                      >
+                        {/* 产品缩略图 120x120 */}
+                        {product.images && product.images.length > 0 ? (
+                          <div className="relative w-[60px] h-[60px] flex-shrink-0 rounded overflow-hidden bg-slate-100 border border-slate-200 ring-1 ring-black/5">
+                            <CosImage
+                              src={product.images[0]}
+                              alt={product.name}
+                              className="w-full h-full object-cover group-hover/item:scale-110 transition-transform duration-300"
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-[60px] h-[60px] flex-shrink-0 rounded bg-slate-100 border border-slate-200 flex items-center justify-center">
+                            <Package className="h-6 w-6 text-slate-400" />
+                          </div>
+                        )}
+                        
+                        {/* 产品名称 */}
+                        <span className="text-sm text-slate-700 group-hover/item:text-primary transition-colors line-clamp-2 flex-1 leading-snug">
+                          {product.name}
+                        </span>
+                      </div>
+                    ))}
+                    
+                    {/* 更多产品提示 */}
+                    {category.products.length > 3 && (
+                      <div className="text-xs text-primary/70 pt-1 px-2 flex items-center gap-1.5">
+                        <span className="w-1 h-1 rounded-full bg-primary/50"></span>
+                        还有 {category.products.length - 3} 个产品
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </Link>
