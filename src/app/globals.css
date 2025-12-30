@@ -8,7 +8,7 @@
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
+  --popover: oklch(1 0 0); /* 完全不透明的白色 */
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.55 0.15 240); /* Softer Blue */
   --primary-foreground: oklch(0.985 0 0);
@@ -42,7 +42,7 @@
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(0.205 0 0); /* 完全不透明的深色 */
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.65 0.15 240); /* Softer Blue Dark Mode */
   --primary-foreground: oklch(0.205 0 0);

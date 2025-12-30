@@ -154,7 +154,7 @@ export function ProductForm({
         {uploadError && <p className="text-sm text-red-600">{uploadError}</p>}
 
         {imageUrls.length > 0 && (
-          <div className="grid grid-cols-3 gap-3 pt-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
             {imageUrls.map((url) => (
               <div key={url} className="border rounded-md p-2 space-y-2">
                 <CosImage

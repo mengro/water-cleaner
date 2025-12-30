@@ -44,7 +44,10 @@ export function SiteFooter({ siteConfig, categories }: { siteConfig: SiteConfig,
             <div className="grid grid-cols-2 gap-4 text-sm">
               {categories.map((category) => (
                 <div key={category.id}>
-                  <Link href={`/products?category=${category.id}`} className="font-medium text-white mb-2 hover:text-slate-300 transition-colors block">
+                  <Link 
+                    href={`/products?category=${category.id}`} 
+                    className="font-medium text-white mb-2 hover:text-slate-300 transition-colors block"
+                  >
                     {category.name}
                   </Link>
                   <p className="text-slate-400 text-xs">{category.description}</p>
