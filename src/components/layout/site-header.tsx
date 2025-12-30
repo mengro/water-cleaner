@@ -8,12 +8,12 @@ import type { SiteConfig } from "@/lib/site-config"
 import { navLinks } from "@/config"
 import { Button } from "@/components/ui/button"
 import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetTitle,
-} from "@/components/ui/sheet"
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export function SiteHeader({ siteConfig }: { siteConfig: SiteConfig }) {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -78,38 +78,30 @@ export function SiteHeader({ siteConfig }: { siteConfig: SiteConfig }) {
           </div>
           
           {/* Mobile Menu */}
-          <Sheet>
-            <SheetTrigger asChild>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">
                 <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle menu</span>
+                <span className="sr-only">打开菜单</span>
               </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px] p-6">
-              <VisuallyHidden>
-                <SheetTitle>导航菜单</SheetTitle>
-              </VisuallyHidden>
-              <nav className="flex flex-col gap-6 mt-8">
-                {navLinks.map((link) => (
-                  <div key={link.href} className="border-b pb-4 last:border-0">
-                    <Link
-                      href={link.href}
-                      className="text-lg font-medium block w-full hover:text-primary transition-colors"
-                    >
-                      {link.name}
-                    </Link>
-                  </div>
-                ))}
-                <div className="mt-4 pt-4 border-t">
-                  <p className="text-sm text-muted-foreground mb-2">联系电话</p>
-                  <a href={`tel:${siteConfig.tel}`} className="text-lg font-bold text-primary flex items-center gap-2">
-                    <Phone className="h-4 w-4" />
-                    {siteConfig.tel}
-                  </a>
-                </div>
-              </nav>
-            </SheetContent>
-          </Sheet>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56 md:hidden">
+              {navLinks.map((link) => (
+                <DropdownMenuItem key={link.href} asChild>
+                  <Link href={link.href} className="w-full cursor-pointer">
+                    {link.name}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <a href={`tel:${siteConfig.tel}`} className="w-full cursor-pointer flex items-center gap-2">
+                  <Phone className="h-4 w-4" />
+                  {siteConfig.tel}
+                </a>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>
