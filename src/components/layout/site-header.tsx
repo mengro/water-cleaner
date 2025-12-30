@@ -11,7 +11,9 @@ import {
   Sheet,
   SheetContent,
   SheetTrigger,
+  SheetTitle,
 } from "@/components/ui/sheet"
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
 
 export function SiteHeader({ siteConfig }: { siteConfig: SiteConfig }) {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -84,6 +86,9 @@ export function SiteHeader({ siteConfig }: { siteConfig: SiteConfig }) {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[400px] p-6">
+              <VisuallyHidden>
+                <SheetTitle>导航菜单</SheetTitle>
+              </VisuallyHidden>
               <nav className="flex flex-col gap-6 mt-8">
                 {navLinks.map((link) => (
                   <div key={link.href} className="border-b pb-4 last:border-0">
