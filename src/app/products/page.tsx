@@ -9,12 +9,13 @@ import categoriesJson from "@/data/categories.json"
 export default async function ProductsPage() {
   const allProducts = await getAllProducts();
   const publishedProducts = allProducts.filter(p => p.isPublished);
-  
+
   const categories = categoriesJson
     .map(category => ({
       ...category,
+      // 使用 includes 检查产品是否属于该分类（支持多分类）
       products: publishedProducts
-        .filter(p => p.categoryId === category.id)
+        .filter(p => p.categoryIds?.includes(category.id))
         .sort((a, b) => a.sortOrder - b.sortOrder)
     }))
     .sort((a, b) => a.sortOrder - b.sortOrder);

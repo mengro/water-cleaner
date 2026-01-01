@@ -5,13 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { saveProduct } from "@/app/admin/products/actions";
 import { useRouter } from "next/navigation";
 import { CosImage } from "@/components/ui/cos-image";
@@ -24,7 +18,7 @@ export function ProductForm({
   initialData?: {
     id: string;
     name: string;
-    categoryId: string;
+    categoryIds: string[];
     description?: string;
     content?: string;
     images?: string[];
@@ -34,6 +28,9 @@ export function ProductForm({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    initialData?.categoryIds || []
+  );
   const [imageUrls, setImageUrls] = useState<string[]>(() => {
     if (initialData?.images && Array.isArray(initialData.images)) {
       return initialData.images;
@@ -83,9 +80,21 @@ export function ProductForm({
     }
   }
 
+  function handleCategoryChange(categoryId: string, checked: boolean) {
+    if (checked) {
+      setSelectedCategories((prev) => [...prev, categoryId]);
+    } else {
+      setSelectedCategories((prev) => prev.filter((id) => id !== categoryId));
+    }
+  }
+
   return (
     <form
       action={async (formData) => {
+        // 添加选中的分类到 formData
+        selectedCategories.forEach((catId) => {
+          formData.append("categoryIds", catId);
+        });
         await saveProduct(formData);
         router.push("/admin/products");
       }}
@@ -104,24 +113,30 @@ export function ProductForm({
         />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="categoryId">所属分类</Label>
-        <Select
-          name="categoryId"
-          defaultValue={initialData?.categoryId}
-          required
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="选择分类" />
-          </SelectTrigger>
-          <SelectContent>
-            {categories.map((cat) => (
-              <SelectItem key={cat.id} value={cat.id}>
+      <div className="space-y-3">
+        <Label>所属分类（可多选）</Label>
+        <div className="space-y-2">
+          {categories.map((cat) => (
+            <div key={cat.id} className="flex items-center space-x-2">
+              <Checkbox
+                id={`category-${cat.id}`}
+                checked={selectedCategories.includes(cat.id)}
+                onCheckedChange={(checked) =>
+                  handleCategoryChange(cat.id, checked === true)
+                }
+              />
+              <Label
+                htmlFor={`category-${cat.id}`}
+                className="cursor-pointer font-normal"
+              >
                 {cat.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+              </Label>
+            </div>
+          ))}
+        </div>
+        {selectedCategories.length === 0 && (
+          <p className="text-sm text-red-600">请至少选择一个分类</p>
+        )}
       </div>
 
       <div className="space-y-2">
@@ -191,7 +206,12 @@ export function ProductForm({
       </div>
 
       <div className="flex gap-4">
-        <Button type="submit">保存产品</Button>
+        <Button
+          type="submit"
+          disabled={selectedCategories.length === 0}
+        >
+          保存产品
+        </Button>
         <Button type="button" variant="outline" onClick={() => router.back()}>
           取消
         </Button>

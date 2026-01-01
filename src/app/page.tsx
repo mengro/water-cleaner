@@ -23,7 +23,7 @@ export default async function Home() {
   const categories: CategoryWithProducts[] = categoriesData.map(category => ({
     ...category,
     products: publishedProducts
-      .filter(p => p.categoryId === category.id)
+      .filter(p => p.categoryIds?.includes(category.id))
       .slice(0, 3)
       .sort((a, b) => a.sortOrder - b.sortOrder)
   })).sort((a, b) => a.sortOrder - b.sortOrder);

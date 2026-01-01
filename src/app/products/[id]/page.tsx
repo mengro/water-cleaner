@@ -65,7 +65,10 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
     notFound();
   }
 
-  const category = categoriesJson.find(cat => cat.id === product.categoryId);
+  // 获取产品所属的所有分类
+  const categories = product.categoryIds
+    ?.map(catId => categoriesJson.find(cat => cat.id === catId))
+    .filter(Boolean) || [];
   const images = product.images && product.images.length > 0 ? product.images : [];
 
   return (
@@ -122,9 +125,22 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           {/* Product Info */}
           <div>
             <div className="mb-6">
-              <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-medium mb-3 sm:mb-4">
-                {category?.name || '未分类'}
-              </span>
+              {/* 显示所有分类标签 */}
+              <div className="flex flex-wrap gap-2 mb-3 sm:mb-4">
+                {categories.map(cat => (
+                  <span
+                    key={cat.id}
+                    className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-medium"
+                  >
+                    {cat.name}
+                  </span>
+                ))}
+                {categories.length === 0 && (
+                  <span className="inline-block px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs sm:text-sm font-medium">
+                    未分类
+                  </span>
+                )}
+              </div>
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">{product.name}</h1>
               <p className="text-base sm:text-lg md:text-xl text-muted-foreground">
                 {product.description}

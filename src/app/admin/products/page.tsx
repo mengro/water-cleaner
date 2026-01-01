@@ -47,7 +47,9 @@ export default async function ProductsPage() {
             {products.map((product) => (
               <TableRow key={product.id}>
                 <TableCell className="font-medium">{product.name}</TableCell>
-                <TableCell>{categoryMap.get(product.categoryId)?.name || '-'}</TableCell>
+                <TableCell>
+                  {product.categoryIds?.map(catId => categoryMap.get(catId)?.name).filter(Boolean).join(', ') || '-'}
+                </TableCell>
                 <TableCell>
                   {product.isPublished ? (
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">

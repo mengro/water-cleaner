@@ -44,20 +44,26 @@ export async function saveProduct(formData: FormData) {
   const id = formData.get('id') as string;
   const name = formData.get('name') as string;
   const description = formData.get('description') as string;
-  const categoryId = formData.get('categoryId') as string;
   const content = formData.get('content') as string;
   const imagesJson = formData.get('images') as string;
-  
+
+  // 获取所有选中的分类ID（多个同名字段）
+  const categoryIds = formData.getAll('categoryIds') as string[];
+
   let images: string[] = [];
   try {
     images = JSON.parse(imagesJson || '[]');
   } catch {
     images = [];
   }
-  
+
+  if (categoryIds.length === 0) {
+    throw new Error('请至少选择一个分类');
+  }
+
   const productData = {
     name,
-    categoryId,
+    categoryIds,
     description: description || undefined,
     content: content || undefined,
     images,
@@ -68,6 +74,7 @@ export async function saveProduct(formData: FormData) {
   } else {
     await createProduct(productData);
   }
-  
+
   revalidatePath('/admin/products');
+  revalidatePath('/products');
 }

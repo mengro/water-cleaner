@@ -6,7 +6,7 @@ const PRODUCTS_JSON_KEY = 'products.json';
 export type Product = {
   id: string;
   name: string;
-  categoryId: string;
+  categoryIds: string[]; // 支持多个分类
   description?: string;
   content?: string;
   images?: string[];
@@ -35,9 +35,15 @@ async function writeProducts(data: ProductsData): Promise<void> {
 
 export async function getAllProducts(): Promise<Product[]> {
   const data = await readProducts();
-  return data.products.sort((a, b) => 
-    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+  return data.products
+    .map(product => ({
+      ...product,
+      // 兼容旧数据：将 categoryId 转换为 categoryIds
+      categoryIds: product.categoryIds || ('categoryId' in product ? [product.categoryId as string] : []),
+    }))
+    .sort((a, b) =>
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
@@ -47,18 +53,18 @@ export async function getProductById(id: string): Promise<Product | null> {
 
 export async function createProduct(input: {
   name: string;
-  categoryId: string;
+  categoryIds: string[];
   description?: string;
   content?: string;
   images?: string[];
 }): Promise<Product> {
   const data = await readProducts();
-  
+
   const now = new Date().toISOString();
   const newProduct: Product = {
     id: createId(),
     name: input.name,
-    categoryId: input.categoryId,
+    categoryIds: input.categoryIds,
     description: input.description,
     content: input.content,
     images: input.images || [],
@@ -67,10 +73,10 @@ export async function createProduct(input: {
     createdAt: now,
     updatedAt: now,
   };
-  
+
   data.products.push(newProduct);
   await writeProducts(data);
-  
+
   return newProduct;
 }
 
@@ -78,7 +84,7 @@ export async function updateProduct(
   id: string,
   input: {
     name: string;
-    categoryId: string;
+    categoryIds: string[];
     description?: string;
     content?: string;
     images?: string[];
@@ -86,24 +92,24 @@ export async function updateProduct(
 ): Promise<Product | null> {
   const data = await readProducts();
   const index = data.products.findIndex(p => p.id === id);
-  
+
   if (index === -1) {
     return null;
   }
-  
+
   const updatedProduct: Product = {
     ...data.products[index],
     name: input.name,
-    categoryId: input.categoryId,
+    categoryIds: input.categoryIds,
     description: input.description,
     content: input.content,
     images: input.images || [],
     updatedAt: new Date().toISOString(),
   };
-  
+
   data.products[index] = updatedProduct;
   await writeProducts(data);
-  
+
   return updatedProduct;
 }
 
