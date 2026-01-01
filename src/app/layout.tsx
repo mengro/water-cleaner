@@ -6,6 +6,9 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { getSiteConfig } from "@/lib/site-config";
 import categoriesData from "@/data/categories.json";
 
+// 强制动态渲染，确保每次请求都从 COS 读取最新配置
+export const dynamic = 'force-dynamic';
+
 const inter = Inter({ subsets: ["latin"] });
 
 export async function generateMetadata(): Promise<Metadata> {

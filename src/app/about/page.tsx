@@ -1,6 +1,9 @@
 import { getSiteConfig } from "@/lib/site-config"
 import ReactMarkdown from "react-markdown"
 
+// 强制动态渲染，确保每次请求都从 COS 读取最新配置
+export const dynamic = 'force-dynamic';
+
 export default async function AboutPage() {
   const config = await getSiteConfig();
 

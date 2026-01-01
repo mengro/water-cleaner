@@ -10,6 +10,9 @@ import categoriesData from "@/data/categories.json"
 import { getAllProducts, type Product } from "@/lib/products"
 import { MobileQuickActions } from "@/components/layout/mobile-quick-actions"
 
+// 强制动态渲染，确保每次请求都从 COS 读取最新数据
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const config = await getSiteConfig();
   const allProducts = await getAllProducts();
@@ -141,9 +144,9 @@ export default async function Home() {
                         key={product.id}
                         className="flex items-center gap-3 p-2 rounded hover:bg-slate-50 transition-colors group/item"
                       >
-                        {/* 产品缩略图 120x120 */}
+                        {/* 产品缩略图 - 增大到120x120 */}
                         {product.images && product.images.length > 0 ? (
-                          <div className="relative w-[60px] h-[60px] flex-shrink-0 rounded overflow-hidden bg-slate-100 border border-slate-200 ring-1 ring-black/5">
+                          <div className="relative w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] flex-shrink-0 rounded overflow-hidden bg-slate-100 border border-slate-200 ring-1 ring-black/5">
                             <CosImage
                               src={product.images[0]}
                               alt={product.name}
@@ -151,8 +154,8 @@ export default async function Home() {
                             />
                           </div>
                         ) : (
-                          <div className="w-[60px] h-[60px] flex-shrink-0 rounded bg-slate-100 border border-slate-200 flex items-center justify-center">
-                            <Package className="h-6 w-6 text-slate-400" />
+                          <div className="w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] flex-shrink-0 rounded bg-slate-100 border border-slate-200 flex items-center justify-center">
+                            <Package className="h-8 w-8 text-slate-400" />
                           </div>
                         )}
                         
@@ -181,6 +184,138 @@ export default async function Home() {
               <Link href="/products" className="group">
                 查看所有产品
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* 推荐产品区块 - 参考霍尔德的12款产品展示 */}
+      <section className="py-8 sm:py-12 md:py-20 bg-gradient-to-b from-white to-slate-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-6 sm:mb-8 md:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">热销推荐产品</h2>
+            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-4">
+              精选热销产品，品质保证，深受客户信赖
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {publishedProducts.slice(0, 12).map((product) => (
+              <Link
+                key={product.id}
+                href={`/products/${product.id}`}
+                className="group"
+              >
+                <Card className="h-full transition-all hover:shadow-lg hover:border-primary/30 active:scale-[0.98] overflow-hidden">
+                  <div className="aspect-square bg-slate-100 relative overflow-hidden">
+                    {product.images && product.images.length > 0 ? (
+                      <CosImage
+                        src={product.images[0]}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Package className="h-16 w-16 text-slate-300" />
+                      </div>
+                    )}
+                    {/* 热销标签 */}
+                    <Badge className="absolute top-2 right-2 bg-red-500 hover:bg-red-600">
+                      热销
+                    </Badge>
+                  </div>
+                  <CardContent className="p-3 sm:p-4">
+                    <h3 className="font-semibold text-sm sm:text-base mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                      {product.name}
+                    </h3>
+                    {product.description && (
+                      <p className="text-xs text-muted-foreground line-clamp-2">
+                        {product.description}
+                      </p>
+                    )}
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+
+          <div className="text-center mt-8 sm:mt-12">
+            <Button size="lg" asChild className="w-full sm:w-auto">
+              <Link href="/products" className="group">
+                查看更多产品
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* 客户案例区块 - 参考霍尔德的成功案例 */}
+      <section className="py-8 sm:py-12 md:py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-6 sm:mb-8 md:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">客户案例</h2>
+            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-4">
+              服务数千家企业，值得信赖的水处理材料供应商
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {[
+              {
+                title: "某市政污水处理厂",
+                description: "使用我司聚氯化铝产品，日处理量5万吨，出水水质稳定达标。",
+                category: "市政工程"
+              },
+              {
+                title: "某大型造纸企业",
+                description: "采购聚丙烯酰胺系列产品，解决废水处理难题，降低运营成本30%。",
+                category: "工业废水"
+              },
+              {
+                title: "某自来水公司",
+                description: "长期供应活性炭滤料，提升饮用水质量，获得客户一致好评。",
+                category: "饮用水处理"
+              },
+              {
+                title: "某化工园区",
+                description: "提供全套水处理解决方案，实现废水零排放，通过环保验收。",
+                category: "工业园区"
+              },
+              {
+                title: "某印染企业",
+                description: "定制化絮凝剂方案，COD去除率提升至95%以上，达标排放。",
+                category: "印染废水"
+              },
+              {
+                title: "某电镀厂",
+                description: "专业重金属处理方案，使用聚合氯化铝铁，水质稳定达标。",
+                category: "电镀废水"
+              }
+            ].map((caseItem, index) => (
+              <Card key={index} className="transition-all hover:shadow-md">
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-2">
+                    <Badge variant="secondary">{caseItem.category}</Badge>
+                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  </div>
+                  <CardTitle className="text-lg">{caseItem.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {caseItem.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="text-center mt-8 sm:mt-12">
+            <Button variant="outline" size="lg" asChild className="w-full sm:w-auto">
+              <Link href="/contact">
+                联系我们，获取解决方案
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
           </div>

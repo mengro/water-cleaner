@@ -21,7 +21,7 @@ export function CosImage({ src, alt, className }: CosImageProps) {
     async function getSignedUrl() {
       try {
         const response = await fetch(
-          `/api/uploads/signed-url?url=${encodeURIComponent(src)}`
+          `/api/images/signed-url?url=${encodeURIComponent(src)}`
         );
 
         if (!response.ok) {
