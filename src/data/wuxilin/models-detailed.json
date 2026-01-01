@@ -1,0 +1,337 @@
+{
+  "company_overview": {
+    "name": "无锡捷环环保科技有限公司",
+    "founded": "2005",
+    "location": "江苏省无锡市",
+    "business_scope": "软化水设备研制、开发、生产、工程设计、安装、调试及售后服务",
+    "certification": "江苏省高新技术企业",
+    "key_advantages": [
+      "多年水处理设备制造经验",
+      "自主生产基地",
+      "完善的售后服务",
+      "先进的技术团队"
+    ]
+  },
+  "product_categories": {
+    "automatic_softening": {
+      "category_name": "全自动软化水设备",
+      "description": "采用全自动控制器的软化水系统，实现自动化运行",
+      "sub_series": [
+        {
+          "series": "FLECK系列",
+          "controller": "美国FLECK全自动控制器",
+          "models": {
+            "FLECK3150": {
+              "capacity_range": "4-15 m³/h",
+              "tank_diameter": "φ300-600mm",
+              "salt_tank": "300-1000L",
+              "power_supply": "220V 50Hz",
+              "working_pressure": "0.2-0.6MPa",
+              "water_temperature": "5-50℃",
+              "outlet_quality": "硬度≤0.03mmol/L",
+              "regeneration": "自动时间/流量控制",
+              "page_reference": 2
+            },
+            "FLECK3900": {
+              "capacity_range": "10-20 m³/h",
+              "tank_diameter": "φ500-750mm",
+              "salt_tank": "500-1000L",
+              "power_supply": "220V 50Hz",
+              "working_pressure": "0.2-0.6MPa",
+              "water_temperature": "5-50℃",
+              "outlet_quality": "硬度≤0.03mmol/L",
+              "regeneration": "自动时间/流量控制",
+              "page_reference": 2
+            },
+            "FLECK2900": {
+              "capacity_range": "1-10 m³/h",
+              "tank_diameter": "φ200-500mm",
+              "salt_tank": "200-500L",
+              "power_supply": "220V 50Hz",
+              "working_pressure": "0.2-0.6MPa",
+              "water_temperature": "5-50℃",
+              "outlet_quality": "硬度≤0.03mmol/L",
+              "regeneration": "自动时间/流量控制",
+              "page_reference": 2
+            }
+          }
+        },
+        {
+          "series": "LS系列",
+          "controller": "美国KINETICO全自动控制头",
+          "features": ["双罐连续供水", "无需电源", "无需停机再生"],
+          "models": {
+            "LS-02T": {
+              "capacity": "1-2 m³/h",
+              "tank_size": "φ200-250mm",
+              "salt_tank": "100-200L",
+              "system_type": "双罐并联",
+              "page_reference": 3
+            },
+            "LS-03T": {
+              "capacity": "2-4 m³/h",
+              "tank_size": "φ250-350mm",
+              "salt_tank": "200-300L",
+              "system_type": "双罐并联",
+              "page_reference": 3
+            }
+          }
+        }
+      ]
+    },
+    "boiler_specific": {
+      "category_name": "锅炉配套软化水设备",
+      "description": "专门为蒸汽锅炉和热水锅炉设计的配套软化水系统",
+      "steam_boiler": [
+        {
+          "model": "LZW-0.5",
+          "boiler_capacity": "0.5吨/h",
+          "water_capacity": "1-2 m³/h",
+          "resin_tank": "φ300-400mm",
+          "salt_tank": "200L",
+          "page_reference": 7
+        },
+        {
+          "model": "LZW-1",
+          "boiler_capacity": "1吨/h",
+          "water_capacity": "2-4 m³/h",
+          "resin_tank": "φ400-500mm",
+          "salt_tank": "300L",
+          "page_reference": 7
+        },
+        {
+          "model": "LZW-2",
+          "boiler_capacity": "2吨/h",
+          "water_capacity": "4-6 m³/h",
+          "resin_tank": "φ500-600mm",
+          "salt_tank": "500L",
+          "page_reference": 7
+        },
+        {
+          "model": "LZW-4",
+          "boiler_capacity": "4吨/h",
+          "water_capacity": "8-10 m³/h",
+          "resin_tank": "φ600-800mm",
+          "salt_tank": "800L",
+          "page_reference": 7
+        },
+        {
+          "model": "LZW-6",
+          "boiler_capacity": "6吨/h",
+          "water_capacity": "12-15 m³/h",
+          "resin_tank": "φ800-1000mm",
+          "salt_tank": "1000L",
+          "page_reference": 7
+        }
+      ],
+      "hot_water_boiler": [
+        {
+          "model": "LSW-0.35",
+          "boiler_capacity": "0.35MW",
+          "water_capacity": "2-4 m³/h",
+          "resin_tank": "φ400-500mm",
+          "salt_tank": "300L",
+          "page_reference": 8
+        },
+        {
+          "model": "LSW-0.7",
+          "boiler_capacity": "0.7MW",
+          "water_capacity": "4-8 m³/h",
+          "resin_tank": "φ500-600mm",
+          "salt_tank": "500L",
+          "page_reference": 8
+        },
+        {
+          "model": "LSW-1.4",
+          "boiler_capacity": "1.4MW",
+          "water_capacity": "8-12 m³/h",
+          "resin_tank": "φ600-800mm",
+          "salt_tank": "800L",
+          "page_reference": 8
+        }
+      ]
+    },
+    "manual_series": {
+      "category_name": "手动控制系列",
+      "description": "经济型手动控制软化水设备",
+      "features": ["结构简单", "价格低廉", "操作维护方便"],
+      "models": {
+        "手动型": {
+          "capacity_range": "0.5-4 m³/h",
+          "tank_diameter": "φ150-400mm",
+          "control_type": "手动多路阀",
+          "applications": "小型锅炉、小型用水系统",
+          "page_reference": 6
+        }
+      }
+    },
+    "multi_tank_system": {
+      "category_name": "多阀多罐系统",
+      "description": "适用于大型用水系统的多罐并联系统",
+      "features": ["大流量处理", "连续供水", "互为备用"],
+      "models": {
+        "组合式双罐": {
+          "capacity": "10 m³/h",
+          "tank_diameter": "φ1200mm",
+          "salt_tank": "1000L",
+          "configuration": "一用一备或同时运行",
+          "page_reference": 4
+        },
+        "FLECK多罐系统": {
+          "capacity_range": "20-100+ m³/h",
+          "configuration": "3-6罐并联",
+          "applications": "大型锅炉房、热电厂、集中供热",
+          "page_reference": 5
+        }
+      }
+    }
+  },
+  "technical_parameters": {
+    "general_specs": {
+      "raw_water_requirement": "市政自来水或符合标准的地下水",
+      "outlet_water_quality": "符合国家低压锅炉给水标准（硬度≤0.03mmol/L）",
+      "working_pressure": "0.2-0.6MPa",
+      "working_temperature": "5-50℃",
+      "power_supply": "220V 50Hz（部分型号无需电源）",
+      "resin_type": "001×7强酸性阳离子交换树脂",
+      "regenerant": "工业盐（NaCl）"
+    },
+    "components": {
+      "control_valves": {
+        "fleck": "美国FLECK全自动控制器",
+        "kinetico": "美国KINETICO控制头",
+        "domestic": "国产全自动/手动控制阀"
+      },
+      "resin_brands": {
+        "purolite": "漂莱特树脂",
+        "rohm_haas": "罗门哈斯树脂",
+        "domestic": "国产优质树脂"
+      },
+      "tank_materials": {
+        "stainless_steel": "不锈钢罐体",
+        "carbon_steel": "碳钢防腐罐体",
+        "frp": "玻璃钢罐体"
+      },
+      "accessories": [
+        "盐箱（PE材质）",
+        "布水系统",
+        "中心管",
+        "盐阀",
+        "压力表",
+        "管道阀门"
+      ]
+    }
+  },
+  "applications": {
+    "industrial": [
+      {
+        "industry": "锅炉供水",
+        "description": "蒸汽锅炉、热水锅炉给水软化",
+        "models_recommended": ["LZW系列", "LSW系列", "FLECK系列"]
+      },
+      {
+        "industry": "纺织印染",
+        "description": "印染用水软化，提高产品质量",
+        "models_recommended": ["FLECK系列", "LS系列"]
+      },
+      {
+        "industry": "造纸行业",
+        "description": "造纸工艺用水软化处理",
+        "models_recommended": ["FLECK多罐系统", "组合式双罐"]
+      },
+      {
+        "industry": "食品加工",
+        "description": "食品生产用水软化",
+        "models_recommended": ["FLECK系列", "LS系列"]
+      },
+      {
+        "industry": "化工行业",
+        "description": "化工工艺用水软化",
+        "models_recommended": ["FLECK多罐系统"]
+      }
+    ],
+    "commercial": [
+      {
+        "industry": "宾馆酒店",
+        "description": "洗衣、洗澡、热水系统用水软化",
+        "models_recommended": ["LS系列", "FLECK系列"]
+      },
+      {
+        "industry": "医院",
+        "description": "消毒供应室、洗衣房用水软化",
+        "models_recommended": ["FLECK系列", "LS系列"]
+      },
+      {
+        "industry": "洗浴中心",
+        "description": "洗浴热水软化",
+        "models_recommended": ["LS系列"]
+      }
+    ],
+    "residential": [
+      {
+        "industry": "别墅家庭",
+        "description": "全屋用水软化，改善生活品质",
+        "models_recommended": ["LS-02T", "FLECK3150"]
+      }
+    ]
+  },
+  "selection_guide": {
+    "by_capacity": {
+      "小型": {
+        "capacity": "0.5-4 m³/h",
+        "recommended": ["手动型", "LS-02T", "FLECK2900"],
+        "applications": "小型锅炉、别墅、小型用水点"
+      },
+      "中型": {
+        "capacity": "4-15 m³/h",
+        "recommended": ["FLECK3150", "LS-03T", "LZW系列"],
+        "applications": "中型锅炉、宾馆、医院"
+      },
+      "大型": {
+        "capacity": "15-50 m³/h",
+        "recommended": ["FLECK3900", "组合式双罐"],
+        "applications": "大型锅炉、集中供热"
+      },
+      "超大型": {
+        "capacity": "50+ m³/h",
+        "recommended": ["FLECK多罐系统"],
+        "applications": "热电厂、大型化工企业"
+      }
+    },
+    "by_application": {
+      "continuous_supply": {
+        "requirement": "需要24小时连续供水",
+        "recommended": ["LS系列", "组合式双罐", "FLECK多罐系统"]
+      },
+      "intermittent_use": {
+        "requirement": "间歇性用水",
+        "recommended": ["FLECK单罐系列", "手动型"]
+      },
+      "space_limited": {
+        "requirement": "安装空间有限",
+        "recommended": ["LS系列", "FLECK2900"]
+      }
+    }
+  },
+  "keywords": [
+    "软化水设备",
+    "软化水系统",
+    "全自动软化水",
+    "锅炉软化水",
+    "除水垢",
+    "水处理设备",
+    "离子交换",
+    "无锡捷环环保",
+    "FLECK控制器",
+    "KINETICO控制头"
+  ],
+  "metadata": {
+    "data_version": "1.0",
+    "extraction_date": "2026-01-01",
+    "source": "无锡捷环环保科技有限公司产品资料",
+    "pdf_url": "https://private-file-1362847923.cos.ap-shanghai.myqcloud.com/无锡林捷环保科技有限公司.pdf",
+    "total_pages": 8,
+    "language": "zh-CN",
+    "notes": "基于PDF内容提取的结构化数据，包含产品系列、技术参数、应用场景等信息"
+  }
+}

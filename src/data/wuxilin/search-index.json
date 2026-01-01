@@ -1,0 +1,229 @@
+{
+  "search_index": {
+    "by_brand": {
+      "无锡捷环": {
+        "company_name": "无锡捷环环保科技有限公司",
+        "products": ["all"],
+        "file": "products.json",
+        "detailed_file": "models-detailed.json"
+      },
+      "FLECK": {
+        "description": "美国FLECK全自动控制器系列",
+        "models": ["FLECK3150", "FLECK3900", "FLECK2900"],
+        "category": "automatic_softening",
+        "capacity_range": "1-20 m³/h"
+      },
+      "KINETICO": {
+        "description": "美国KINETICO全自动控制头",
+        "models": ["LS-02T", "LS-03T"],
+        "category": "automatic_softening",
+        "features": ["双罐连续供水", "无需电源"]
+      }
+    },
+    "by_series": {
+      "FLECK系列": {
+        "models": ["FLECK3150", "FLECK3900", "FLECK2900"],
+        "features": ["自动化程度高", "运行稳定", "安装简便"],
+        "applications": ["锅炉供水", "纺织印染", "食品加工", "宾馆酒店"]
+      },
+      "LS系列": {
+        "models": ["LS-02T", "LS-03T"],
+        "features": ["双罐连续供水", "无需电源", "无需停机再生"],
+        "applications": ["别墅家庭", "宾馆", "医院"]
+      },
+      "LZW系列": {
+        "description": "蒸汽锅炉配套软化水设备",
+        "models": ["LZW-0.5", "LZW-1", "LZW-2", "LZW-4", "LZW-6"],
+        "applications": ["蒸汽锅炉供水"]
+      },
+      "LSW系列": {
+        "description": "热水锅炉配套软化水设备",
+        "models": ["LSW-0.35", "LSW-0.7", "LSW-1.4"],
+        "applications": ["热水锅炉供水"]
+      },
+      "手动系列": {
+        "models": ["手动型"],
+        "features": ["结构简单", "价格经济"],
+        "applications": ["小型锅炉", "小型用水系统"]
+      },
+      "组合式双罐": {
+        "features": ["连续供水", "互为备用"],
+        "applications": ["大型用水场所"]
+      },
+      "多罐系统": {
+        "features": ["大流量", "连续供水", "互为备用"],
+        "applications": ["大型锅炉房", "热电厂", "集中供热"]
+      }
+    },
+    "by_capacity": {
+      "0.5-2 m³/h": {
+        "models": ["LS-02T", "手动型", "LZW-0.5"],
+        "applications": ["小型锅炉", "别墅", "家庭"]
+      },
+      "2-4 m³/h": {
+        "models": ["LS-03T", "FLECK2900", "LZW-1", "LSW-0.35"],
+        "applications": ["小型宾馆", "小型锅炉"]
+      },
+      "4-10 m³/h": {
+        "models": ["FLECK3150", "LZW-2", "LSW-0.7"],
+        "applications": ["中型锅炉", "宾馆", "医院"]
+      },
+      "10-20 m³/h": {
+        "models": ["FLECK3900", "LZW-4", "LSW-1.4", "组合式双罐"],
+        "applications": ["大型锅炉", "集中供热"]
+      },
+      "20+ m³/h": {
+        "models": ["LZW-6", "FLECK多罐系统"],
+        "applications": ["热电厂", "大型化工企业"]
+      }
+    },
+    "by_application": {
+      "蒸汽锅炉": {
+        "recommended_models": ["LZW-0.5", "LZW-1", "LZW-2", "LZW-4", "LZW-6"],
+        "selection_criteria": "根据锅炉吨位选择对应型号"
+      },
+      "热水锅炉": {
+        "recommended_models": ["LSW-0.35", "LSW-0.7", "LSW-1.4"],
+        "selection_criteria": "根据锅炉功率(MW)选择对应型号"
+      },
+      "纺织印染": {
+        "recommended_models": ["FLECK3150", "FLECK3900", "LS系列"],
+        "requirements": ["连续供水", "稳定运行"]
+      },
+      "造纸行业": {
+        "recommended_models": ["FLECK多罐系统", "组合式双罐"],
+        "requirements": ["大流量", "连续供水"]
+      },
+      "食品加工": {
+        "recommended_models": ["FLECK系列", "LS系列"],
+        "requirements": ["水质稳定", "安全可靠"]
+      },
+      "宾馆酒店": {
+        "recommended_models": ["LS系列", "FLECK3150"],
+        "applications": "洗衣、洗澡、热水系统"
+      },
+      "医院": {
+        "recommended_models": ["FLECK系列", "LS系列"],
+        "applications": "消毒供应室、洗衣房"
+      },
+      "别墅家庭": {
+        "recommended_models": ["LS-02T", "FLECK2900"],
+        "requirements": ["安静运行", "占地面积小"]
+      }
+    },
+    "by_feature": {
+      "连续供水": {
+        "models": ["LS系列", "组合式双罐", "FLECK多罐系统"],
+        "advantage": "双罐系统或多罐并联，再生时不停机"
+      },
+      "无需电源": {
+        "models": ["LS系列"],
+        "advantage": "利用水压驱动，节能环保"
+      },
+      "自动化程度高": {
+        "models": ["FLECK系列", "LS系列"],
+        "advantage": "全自动控制，无需人工干预"
+      },
+      "价格经济": {
+        "models": ["手动型"],
+        "advantage": "结构简单，成本低廉"
+      },
+      "安装简便": {
+        "models": ["FLECK2900", "LS系列"],
+        "advantage": "结构紧凑，占地面积小"
+      }
+    },
+    "by_component": {
+      "控制阀": {
+        "FLECK": {
+          "origin": "美国",
+          "models": ["FLECK3150", "FLECK3900", "FLECK2900"],
+          "features": ["时间控制", "流量控制", "全自动运行"]
+        },
+        "KINETICO": {
+          "origin": "美国",
+          "models": ["LS系列"],
+          "features": ["水力驱动", "无需电源", "双罐控制"]
+        }
+      },
+      "树脂": {
+        "Purolite": {
+          "brand": "漂莱特",
+          "type": "001×7强酸性阳离子交换树脂",
+          "origin": "进口"
+        },
+        "RohmAndHaas": {
+          "brand": "罗门哈斯",
+          "type": "001×7强酸性阳离子交换树脂",
+          "origin": "进口"
+        },
+        "Domestic": {
+          "brand": "国产优质树脂",
+          "type": "001×7强酸性阳离子交换树脂",
+          "origin": "国产"
+        }
+      },
+      "罐体": {
+        "不锈钢": {
+          "features": ["耐腐蚀", "寿命长"],
+          "applications": "所有型号"
+        },
+        "碳钢防腐": {
+          "features": ["强度高", "价格适中"],
+          "applications": "大型设备"
+        },
+        "玻璃钢": {
+          "features": ["重量轻", "耐腐蚀"],
+          "applications": "中小型设备"
+        }
+      }
+    }
+  },
+  "keywords_mapping": {
+    "软化水": ["all"],
+    "软化水设备": ["all"],
+    "除垢": ["all"],
+    "水处理": ["all"],
+    "锅炉软化": ["LZW系列", "LSW系列"],
+    "全自动软化": ["FLECK系列", "LS系列"],
+    "双罐": ["LS系列", "组合式双罐"],
+    "连续供水": ["LS系列", "组合式双罐", "多罐系统"],
+    "家用": ["LS-02T", "FLECK2900"],
+    "商用": ["FLECK3150", "LS-03T"],
+    "工业用": ["FLECK3900", "多罐系统"],
+    "别墅": ["LS-02T"],
+    "宾馆": ["LS系列", "FLECK3150"],
+    "纺织": ["FLECK系列"],
+    "食品": ["FLECK系列", "LS系列"]
+  },
+  "common_questions": {
+    "如何选择软化水设备": {
+      "answer": "根据用水量、应用场景、是否需要连续供水等因素选择",
+      "reference": "selection_guide in models-detailed.json"
+    },
+    "FLECK和LS系列的区别": {
+      "answer": "FLECK系列是单罐系统需要电源，LS系列是双罐系统无需电源且可连续供水",
+      "reference": "product_categories in models-detailed.json"
+    },
+    "蒸汽锅炉配多大软化水设备": {
+      "answer": "根据锅炉吨位选择，0.5吨配LZW-0.5，1吨配LZW-1，以此类推",
+      "reference": "boiler_specific in models-detailed.json"
+    },
+    "树脂多长时间更换": {
+      "answer": "一般3-5年，具体根据使用情况和原水硬度而定",
+      "reference": "technical_parameters in models-detailed.json"
+    },
+    "设备占地面积多大": {
+      "answer": "根据型号不同，单罐系统约1-2平方米，双罐系统约2-4平方米",
+      "reference": "individual model specs"
+    }
+  },
+  "metadata": {
+    "index_version": "1.0",
+    "created_date": "2026-01-01",
+    "last_updated": "2026-01-01",
+    "source_files": ["products.json", "models-detailed.json"],
+    "index_type": "searchable_product_index",
+    "language": "zh-CN"
+  }
+}

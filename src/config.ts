@@ -27,23 +27,17 @@ export const productCategories = [
     ]
   },
   {
-    id: "carbon",
-    name: "活性炭系列",
-    description: "强力吸附，深度净化",
-    products: [
-      { name: "椰壳活性炭", id: "coconut-carbon" },
-      { name: "果壳活性炭", id: "shell-carbon" },
-      { name: "粉状活性炭", id: "powder-carbon" },
-    ]
-  },
-  {
     id: "filter-media",
     name: "滤料系列",
-    description: "优质滤料，层层过滤",
+    description: "优质滤料，层层过滤（含活性炭）",
     products: [
       { name: "石英砂", id: "quartz-sand" },
       { name: "无烟煤", id: "anthracite" },
       { name: "锰砂", id: "manganese-sand" },
+      { name: "椰壳活性炭", id: "coconut-carbon" },
+      { name: "果壳活性炭", id: "shell-carbon" },
+      { name: "粉状活性炭", id: "powder-carbon" },
+      { name: "柱状活性炭", id: "columnar-carbon" },
     ]
   },
   {
@@ -53,6 +47,27 @@ export const productCategories = [
     products: [
       { name: "蜂窝斜管", id: "honeycomb" },
       { name: "纤维球", id: "fiber-ball" },
+    ]
+  },
+  {
+    id: "bio-culture",
+    name: "生物菌种",
+    description: "高效菌种，生物降解",
+    products: [
+      { name: "硝化细菌", id: "nitrifying-bacteria" },
+      { name: "反硝化细菌", id: "denitrifying-bacteria" },
+      { name: "光合细菌", id: "photosynthetic-bacteria" },
+      { name: "复合益生菌", id: "compound-probiotics" },
+    ]
+  },
+  {
+    id: "integrated-equipment",
+    name: "一体化污水处理",
+    description: "成套设备，一站式解决方案",
+    products: [
+      { name: "一体化污水处理设备", id: "integrated-equipment" },
+      { name: "MBR膜污水处理设备", id: "mbr-equipment" },
+      { name: "气浮机", id: "daf-machine" },
     ]
   },
 ];

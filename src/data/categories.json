@@ -6,21 +6,27 @@
     "sortOrder": 0
   },
   {
-    "id": "carbon",
-    "name": "活性炭系列",
-    "description": "强力吸附，深度净化",
-    "sortOrder": 10
-  },
-  {
     "id": "filter-media",
     "name": "滤料系列",
-    "description": "优质滤料，层层过滤",
-    "sortOrder": 20
+    "description": "优质滤料，层层过滤（含活性炭）",
+    "sortOrder": 10
   },
   {
     "id": "fillers",
     "name": "填料系列",
     "description": "环保填料，提高效率",
+    "sortOrder": 20
+  },
+  {
+    "id": "bio-culture",
+    "name": "生物菌种",
+    "description": "高效菌种，生物降解",
     "sortOrder": 30
+  },
+  {
+    "id": "integrated-equipment",
+    "name": "一体化污水处理",
+    "description": "成套设备，一站式解决方案",
+    "sortOrder": 40
   }
 ]
