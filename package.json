@@ -8,7 +8,11 @@
     "sync:deploy": "node scripts/sync-deploy.mjs",
     "postbuild": "node scripts/sync-deploy.mjs",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "init:products": "tsx scripts/init-products.ts",
+    "init:products:full": "tsx scripts/init-products-full.ts",
+    "generate:products": "tsx scripts/generate-products-json.ts",
+    "upload:products": "tsx scripts/upload-to-cos.ts"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^3.0.4",
