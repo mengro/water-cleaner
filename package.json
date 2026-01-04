@@ -12,7 +12,16 @@
     "init:products": "tsx scripts/init-products.ts",
     "init:products:full": "tsx scripts/init-products-full.ts",
     "generate:products": "tsx scripts/generate-products-json.ts",
-    "upload:products": "tsx scripts/upload-to-cos.ts"
+    "upload:products": "tsx scripts/upload-to-cos.ts",
+    "//--- 核心部署命令 ---//": "",
+    "deploy": "npm run build:image && npm run push:image && npm run remote:up && npm run remote:prune",
+    "build:image": "docker build -t water-cleaner:latest .",
+    "push:image": "docker save water-cleaner:latest | gzip | ssh root@49.235.21.201 'gunzip | docker load'",
+    "remote:up": "docker --context water-remote compose --env-file .env up -d",
+    "remote:prune": "docker --context water-remote image prune -f",
+    "//--- 辅助工具 ---//": "",
+    "remote:logs": "docker --context water-remote logs -f water-cleaner",
+    "remote:ps": "docker --context water-remote ps"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^3.0.4",
@@ -32,7 +41,8 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-markdown": "^10.1.0",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^20",

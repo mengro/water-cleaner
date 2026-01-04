@@ -1,0 +1,9 @@
+services:
+  water-service:  # 服务名
+    image: water-cleaner:latest
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - "3000:80" # 根据你的实际端口修改
+    # ...其他配置（环境变量、挂载等）

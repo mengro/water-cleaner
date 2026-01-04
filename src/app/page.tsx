@@ -30,39 +30,41 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col min-h-screen pb-20 md:pb-0">
-      {/* Hero Section - 工业风大图背景 */}
-      <section className="relative bg-slate-900 py-12 sm:py-16 md:py-24 overflow-hidden">
+      {/* Hero Section - 海洋蓝大图背景 */}
+      <section className="relative bg-slate-500 py-12 sm:py-16 md:py-24 overflow-hidden">
         {/* 背景图片层 */}
         {publishedProducts.length > 0 && publishedProducts[0].images && publishedProducts[0].images.length > 0 ? (
-          <div className="absolute inset-0">
-            <CosImage
-              src={publishedProducts[0].images[0]}
-              alt="产品背景"
-              className="w-full h-full object-cover"
-            />
-            {/* 深色遮罩 - 确保文字可读 */}
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-900/80 to-slate-900/70" />
-          </div>
+          <>
+            <div className="absolute inset-0 z-0">
+              <CosImage
+                src={publishedProducts[0].images[0]}
+                alt="产品背景"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {/* 浅蓝色遮罩 - 确保文字可读 */}
+            <div className="absolute inset-0 z-10 bg-gradient-to-br from-blue-700/60 via-blue-600/55 to-cyan-700/60 backdrop-blur-[2px]" />
+          </>
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/30 to-cyan-600/20" />
+          <div className="absolute inset-0 z-0 bg-gradient-to-br from-blue-900/70 via-cyan-700/65 to-blue-900/60" />
         )}
 
-        <div className="container relative mx-auto px-4 text-center">
+        <div className="container relative mx-auto px-4 text-center z-20">
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-white mb-6 sm:mb-8 drop-shadow-lg">
             专业水处理材料
             <br className="sm:hidden" />
             <span className="hidden sm:inline"> </span>
-            <span className="text-red-500">一站式供应商</span>
+            <span className="text-orange-500">一站式供应商</span>
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-slate-200 mb-8 sm:mb-10 max-w-3xl mx-auto px-4 leading-relaxed drop-shadow-md">
             专注净水领域20年，提供聚氯化铝、活性炭、滤料等全系列水处理产品。<br className="hidden sm:block" />
-            <span className="text-red-400 font-semibold">源头工厂</span>，品质保证。
+            <span className="text-orange-400 font-semibold">源头工厂</span>，品质保证。
           </p>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4 sm:px-0">
             <Button
               size="lg"
               asChild
-              className="text-base sm:text-lg h-12 sm:h-14 px-8 sm:px-10 bg-red-600 hover:bg-red-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all"
+              className="text-base sm:text-lg h-12 sm:h-14 px-8 sm:px-10 bg-orange-600 hover:bg-orange-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all"
             >
               <Link href="/contact">立即咨询</Link>
             </Button>
@@ -105,61 +107,84 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((category) => (
               <Link
                 key={category.id}
                 href={`/products?category=${category.id}`}
                 className="group"
               >
-                <Card className="h-full transition-all hover:shadow-md hover:border-primary/30 active:scale-[0.98] overflow-hidden">
-                  <CardHeader className="p-4 pb-3 border-b bg-gradient-to-br from-slate-50/50 to-transparent">
-                    <div className="flex items-center justify-between gap-2">
-                      <CardTitle className="text-base group-hover:text-primary transition-colors line-clamp-1 flex-1">
-                        {category.name}
-                      </CardTitle>
-                      <Badge variant="secondary" className="text-xs shrink-0">
+                <Card className="h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1 active:scale-[0.98] overflow-hidden border border-primary/10 bg-white/90 backdrop-blur-md shadow-lg hover:shadow-primary/20">
+                  <CardHeader className="px-5 pb-4 bg-gradient-to-br from-primary/8 to-primary/3 border-b border-primary/10">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-3 flex-1 min-w-0">
+                        {/* 现代图标容器 - 使用蓝色确保可见 */}
+                        <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center flex-shrink-0 shadow-md shadow-primary/30">
+                          <Factory className="h-5 w-5 text-black" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <CardTitle className="text-base font-bold group-hover:text-primary transition-colors line-clamp-1 leading-tight">
+                            {category.name}
+                          </CardTitle>
+                          <p className="text-xs text-muted-foreground line-clamp-1 mt-1 leading-relaxed">
+                            {category.description}
+                          </p>
+                        </div>
+                      </div>
+                      <Badge variant="secondary" className="text-xs shrink-0 bg-primary/10 text-primary hover:bg-primary/20 border-0 font-semibold px-2.5 py-1">
                         {category.products.length}
                       </Badge>
                     </div>
-                    <p className="text-xs text-muted-foreground line-clamp-2 mt-1.5">
-                      {category.description}
-                    </p>
                   </CardHeader>
-                  <CardContent className="p-3 space-y-2">
-                    {/* 产品列表 - 最多显示3个 */}
-                    {category.products.slice(0, 3).map((product) => (
-                      <div
-                        key={product.id}
-                        className="flex items-center gap-3 p-2 rounded hover:bg-slate-50 transition-colors group/item"
-                      >
-                        {/* 产品缩略图 - 增大到120x120 */}
-                        {product.images && product.images.length > 0 ? (
-                          <div className="relative w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] flex-shrink-0 rounded overflow-hidden bg-slate-100 border border-slate-200 ring-1 ring-black/5">
-                            <CosImage
-                              src={product.images[0]}
-                              alt={product.name}
-                              className="w-full h-full object-cover group-hover/item:scale-110 transition-transform duration-300"
-                            />
+                  <CardContent className="p-4 space-y-2.5">
+                    {category.products.length > 0 ? (
+                      <>
+                        {/* 产品列表 - 最多显示3个 */}
+                        {category.products.slice(0, 3).map((product) => (
+                          <div
+                            key={product.id}
+                            className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-primary/5 transition-all duration-200 group/item border border-transparent hover:border-primary/20"
+                          >
+                            {/* 产品缩略图 */}
+                            {product.images && product.images.length > 0 ? (
+                              <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-primary/10 shadow-sm">
+                                <CosImage
+                                  src={product.images[0]}
+                                  alt={product.name}
+                                  className="w-full h-full object-cover group-hover/item:scale-110 transition-transform duration-300"
+                                />
+                              </div>
+                            ) : (
+                              <div className="w-16 h-16 flex-shrink-0 rounded-lg bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/10 flex items-center justify-center shadow-sm">
+                                <Package className="h-6 w-6 text-primary/40" />
+                              </div>
+                            )}
+
+                            {/* 产品名称 */}
+                            <div className="flex-1 min-w-0">
+                              <span className="text-sm text-foreground group-hover/item:text-primary transition-colors line-clamp-2 font-medium leading-snug block">
+                                {product.name}
+                              </span>
+                            </div>
                           </div>
-                        ) : (
-                          <div className="w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] flex-shrink-0 rounded bg-slate-100 border border-slate-200 flex items-center justify-center">
-                            <Package className="h-8 w-8 text-slate-400" />
+                        ))}
+
+                        {/* 更多产品提示 */}
+                        {category.products.length > 3 && (
+                          <div className="text-xs text-muted-foreground pt-1 px-2.5 flex items-center gap-2 font-medium border-l-2 border-primary/30 pl-3">
+                            <span>+</span>
+                            还有 {category.products.length - 3} 个产品
                           </div>
                         )}
-                        
-                        {/* 产品名称 */}
-                        <span className="text-sm text-slate-700 group-hover/item:text-primary transition-colors line-clamp-2 flex-1 leading-snug">
-                          {product.name}
-                        </span>
-                      </div>
-                    ))}
-                    
-                    {/* 更多产品提示 */}
-                    {category.products.length > 3 && (
-                      <div className="text-xs text-primary/70 pt-1 px-2 flex items-center gap-1.5">
-                        <span className="w-1 h-1 rounded-full bg-primary/50"></span>
-                        还有 {category.products.length - 3} 个产品
+                      </>
+                    ) : (
+                      /* 空态展示 - 该分类下没有产品 */
+                      <div className="flex flex-col items-center justify-center py-8 px-4 text-center">
+                        <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center mb-3">
+                          <Package className="h-6 w-6 text-primary/30" />
+                        </div>
+                        <p className="text-sm text-muted-foreground font-medium">暂无产品</p>
+                        <p className="text-xs text-muted-foreground/70 mt-1">敬请期待</p>
                       </div>
                     )}
                   </CardContent>
@@ -180,7 +205,7 @@ export default async function Home() {
       </section>
 
       {/* Features Section - 选择我们的理由 */}
-      <section className="py-8 sm:py-12 md:py-16 bg-slate-50">
+      <section className="py-8 sm:py-12 md:py-16 bg-gradient-to-b from-white/60 to-slate-50/60 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="text-center mb-6 sm:mb-8 md:mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">为什么选择我们</h2>
@@ -189,35 +214,41 @@ export default async function Home() {
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-            <Card className="border-none shadow-md hover:shadow-lg transition-shadow">
+            <Card className="bg-gradient-to-br from-primary/15 via-primary/10 to-cyan-50/15 backdrop-blur-md shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border-2 border-primary/30 dark:from-primary/10 dark:via-primary/5 dark:to-cyan-50/10 dark:border-primary/20">
               <CardHeader className="pb-3">
-                <Factory className="h-8 w-8 sm:h-10 sm:w-10 text-primary mb-2" />
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-3 shadow-sm">
+                  <Factory className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />
+                </div>
                 <CardTitle className="text-lg sm:text-xl">源头工厂</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm sm:text-base text-muted-foreground">
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   自有生产基地，省去中间环节，为您提供最具竞争力的价格。
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-none shadow-md hover:shadow-lg transition-shadow">
+            <Card className="bg-gradient-to-br from-primary/15 via-primary/10 to-cyan-50/15 backdrop-blur-md shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border-2 border-primary/30 dark:from-primary/10 dark:via-primary/5 dark:to-cyan-50/10 dark:border-primary/20">
               <CardHeader className="pb-3">
-                <ShieldCheck className="h-8 w-8 sm:h-10 sm:w-10 text-primary mb-2" />
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-3 shadow-sm">
+                  <ShieldCheck className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />
+                </div>
                 <CardTitle className="text-lg sm:text-xl">品质保证</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm sm:text-base text-muted-foreground">
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   严格执行国家标准，每批次产品均经过实验室检测，确保质量稳定。
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-none shadow-md hover:shadow-lg transition-shadow">
+            <Card className="bg-gradient-to-br from-primary/15 via-primary/10 to-cyan-50/15 backdrop-blur-md shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border-2 border-primary/30 dark:from-primary/10 dark:via-primary/5 dark:to-cyan-50/10 dark:border-primary/20">
               <CardHeader className="pb-3">
-                <Truck className="h-8 w-8 sm:h-10 sm:w-10 text-primary mb-2" />
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-3 shadow-sm">
+                  <Truck className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />
+                </div>
                 <CardTitle className="text-lg sm:text-xl">闪电发货</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm sm:text-base text-muted-foreground">
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   常备库存充足，专业物流团队，确保货物快速安全送达。
                 </p>
               </CardContent>
@@ -237,37 +268,37 @@ export default async function Home() {
           </div>
 
           {/* 显示前16个产品，如果产品数量多于16个则显示更多 */}
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
             {publishedProducts.slice(0, 16).map((product) => (
               <Link
                 key={product.id}
                 href={`/products/${product.id}`}
                 className="group"
               >
-                <Card className="h-full transition-all hover:shadow-lg hover:border-primary/30 active:scale-[0.98] overflow-hidden">
-                  <div className="aspect-square bg-slate-100 relative overflow-hidden">
+                <Card className="h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1 active:scale-[0.98] overflow-hidden border border-primary/10 bg-white/90 backdrop-blur-md shadow-lg hover:shadow-primary/20">
+                  <div className="aspect-square bg-gradient-to-br from-primary/5 to-primary/10 relative overflow-hidden">
                     {product.images && product.images.length > 0 ? (
                       <CosImage
                         src={product.images[0]}
                         alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <Package className="h-16 w-16 text-slate-300" />
+                        <Package className="h-16 w-16 text-primary/20" />
                       </div>
                     )}
                     {/* 热销标签 */}
-                    <Badge className="absolute top-2 right-2 bg-red-500 hover:bg-red-600">
+                    <Badge className="absolute top-3 right-3 bg-orange-500/90 backdrop-blur-sm hover:bg-orange-600 shadow-lg">
                       热销
                     </Badge>
                   </div>
-                  <CardContent className="p-3 sm:p-4">
-                    <h3 className="font-semibold text-sm sm:text-base mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                  <CardContent className="p-4">
+                    <h3 className="font-semibold text-base mb-2 line-clamp-2 group-hover:text-primary transition-colors leading-snug">
                       {product.name}
                     </h3>
                     {product.description && (
-                      <p className="text-xs text-muted-foreground line-clamp-2">
+                      <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
                         {product.description}
                       </p>
                     )}
@@ -288,8 +319,8 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 客户案例区块 - 参考霍尔德的成功案例 */}
-      <section className="py-8 sm:py-12 md:py-20 bg-white">
+      {/* 客户案例区块 - 玻璃态风格 */}
+      <section className="py-8 sm:py-12 md:py-20 bg-gradient-to-b from-white/60 to-slate-50/60 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="text-center mb-6 sm:mb-8 md:mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">客户案例</h2>
@@ -331,10 +362,10 @@ export default async function Home() {
                 category: "电镀废水"
               }
             ].map((caseItem, index) => (
-              <Card key={index} className="transition-all hover:shadow-md">
+              <Card key={index} className="bg-gradient-to-br from-primary/15 via-primary/10 to-cyan-50/15 backdrop-blur-md shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border-2 border-primary/30 dark:from-primary/10 dark:via-primary/5 dark:to-cyan-50/10 dark:border-primary/20">
                 <CardHeader>
                   <div className="flex items-center justify-between mb-2">
-                    <Badge variant="secondary">{caseItem.category}</Badge>
+                    <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors">{caseItem.category}</Badge>
                     <CheckCircle2 className="h-5 w-5 text-green-500" />
                   </div>
                   <CardTitle className="text-lg">{caseItem.title}</CardTitle>
@@ -349,7 +380,7 @@ export default async function Home() {
           </div>
 
           <div className="text-center mt-8 sm:mt-12">
-            <Button variant="outline" size="lg" asChild className="w-full sm:w-auto">
+            <Button variant="outline" size="lg" asChild className="w-full sm:w-auto bg-white/50 backdrop-blur-sm hover:bg-white/70 border-white/40 dark:bg-white/5 dark:border-white/10 dark:hover:bg-white/10">
               <Link href="/contact">
                 联系我们，获取解决方案
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -359,8 +390,8 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 资质荣誉区块 - 参考"参考1"的证书展示 */}
-      <section className="py-8 sm:py-12 md:py-20 bg-slate-50">
+      {/* 资质荣誉区块 - 玻璃态风格 */}
+      <section className="py-8 sm:py-12 md:py-20 bg-gradient-to-b from-slate-50/60 to-white/60 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="text-center mb-6 sm:mb-8 md:mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">资质荣誉</h2>
@@ -420,10 +451,12 @@ export default async function Home() {
                 category: "行业荣誉"
               }
             ].map((cert, index) => (
-              <Card key={index} className="transition-all hover:shadow-md text-center">
+              <Card key={index} className="bg-gradient-to-br from-primary/15 via-primary/10 to-cyan-50/15 backdrop-blur-md shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border-2 border-primary/30 dark:from-primary/10 dark:via-primary/5 dark:to-cyan-50/10 dark:border-primary/20 text-center">
                 <CardHeader className="pb-3">
-                  <div className="text-4xl sm:text-5xl mb-3">{cert.icon}</div>
-                  <Badge variant="outline" className="mb-2 mx-auto w-fit">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center mx-auto mb-3 shadow-sm">
+                    <div className="text-3xl sm:text-4xl">{cert.icon}</div>
+                  </div>
+                  <Badge variant="outline" className="mb-2 mx-auto w-fit bg-primary/10 text-primary hover:bg-primary/20 transition-colors border-primary/20">
                     {cert.category}
                   </Badge>
                   <CardTitle className="text-base sm:text-lg line-clamp-1">
@@ -440,7 +473,7 @@ export default async function Home() {
           </div>
 
           <div className="text-center mt-8 sm:mt-12">
-            <Button variant="outline" size="lg" asChild className="w-full sm:w-auto">
+            <Button variant="outline" size="lg" asChild className="w-full sm:w-auto bg-white/50 backdrop-blur-sm hover:bg-white/70 border-white/40 dark:bg-white/5 dark:border-white/10 dark:hover:bg-white/10">
               <Link href="/contact">
                 了解更多认证信息
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -451,7 +484,7 @@ export default async function Home() {
       </section>
 
       {/* 工厂实景/企业实力展示 - 参考"参考1" */}
-      <section className="py-8 sm:py-12 md:py-20 bg-white">
+      <section className="py-8 sm:py-12 md:py-20 bg-gradient-to-b from-slate-50/60 to-white/60 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="text-center mb-6 sm:mb-8 md:mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">企业实力</h2>
@@ -464,7 +497,7 @@ export default async function Home() {
           {publishedProducts.length >= 3 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6">
               {publishedProducts.slice(0, 3).map((product, index) => (
-                <div key={product.id} className="relative group overflow-hidden rounded-lg shadow-md">
+                <div key={product.id} className="relative group overflow-hidden rounded-2xl bg-gradient-to-br from-primary/15 via-primary/10 to-cyan-50/15 backdrop-blur-md shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border-2 border-primary/30 dark:from-primary/10 dark:via-primary/5 dark:to-cyan-50/10 dark:border-primary/20">
                   <div className="aspect-[4/3] bg-slate-100">
                     {product.images && product.images.length > 0 ? (
                       <CosImage
@@ -497,7 +530,7 @@ export default async function Home() {
             /* 如果产品不够3个，使用占位符 */
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6">
               {[0, 1, 2].map((index) => (
-                <div key={index} className="relative group overflow-hidden rounded-lg shadow-md bg-slate-100 aspect-[4/3] flex items-center justify-center">
+                <div key={index} className="relative group overflow-hidden rounded-2xl bg-gradient-to-br from-primary/15 via-primary/10 to-cyan-50/15 backdrop-blur-md shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border-2 border-primary/30 dark:from-primary/10 dark:via-primary/5 dark:to-cyan-50/10 dark:border-primary/20 aspect-[4/3] flex items-center justify-center">
                   <Factory className="h-16 w-16 text-slate-300" />
                   <div className="absolute bottom-4 left-4 right-4 text-slate-600">
                     <h3 className="font-semibold text-lg mb-1">
@@ -522,9 +555,11 @@ export default async function Home() {
               { value: "100+", label: "产品品种", icon: "📦" },
               { value: "50+", label: "专利技术", icon: "💡" }
             ].map((stat, index) => (
-              <Card key={index} className="text-center border-none bg-slate-50">
+              <Card key={index} className="text-center bg-gradient-to-br from-primary/15 via-primary/10 to-cyan-50/15 backdrop-blur-md shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border-2 border-primary/30 dark:from-primary/10 dark:via-primary/5 dark:to-cyan-50/10 dark:border-primary/20">
                 <CardContent className="pt-6">
-                  <div className="text-3xl sm:text-4xl mb-2">{stat.icon}</div>
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 mx-auto mb-3 flex items-center justify-center">
+                    <div className="text-3xl">{stat.icon}</div>
+                  </div>
                   <div className="text-2xl sm:text-3xl font-bold text-primary mb-1">
                     {stat.value}
                   </div>
@@ -539,30 +574,36 @@ export default async function Home() {
       </section>
 
       {/* About Preview */}
-      <section className="py-8 sm:py-12 md:py-20 bg-slate-900 text-white">
+      <section className="py-8 sm:py-12 md:py-20 bg-gradient-to-b from-white/60 to-slate-50/60 backdrop-blur-sm">
         <div className="container mx-auto px-4">
+          <div className="text-center mb-6 sm:mb-8 md:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">关于我们</h2>
+            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-4">
+              专业水处理材料供应商，值得信赖的合作伙伴
+            </p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-white">
+            <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-primary/15 via-primary/10 to-cyan-50/15 backdrop-blur-md shadow-xl border-2 border-primary/30 dark:from-primary/10 dark:via-primary/5 dark:to-cyan-50/10 dark:border-primary/20">
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-slate-900 dark:text-white">
                 关于 {config.brandName}
-              </h2>
-              <p className="text-sm sm:text-base text-slate-200 mb-4 sm:mb-6 leading-relaxed">
+              </h3>
+              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 mb-4 sm:mb-6 leading-relaxed">
                 {config.companyName}
                 集科研、生产、经营、服务于一体，是从事水处理剂的开发、生产、经营及从事水处理工程的设计、研发、运营及各类废水，噪音治理的专业企业。
               </p>
-              <p className="text-sm sm:text-base text-slate-200 mb-6 sm:mb-8 leading-relaxed">
-                本公司与多所高等院校及化工科研单位合作，研制生产出"田邦""中禹"牌絮凝剂系列产品：聚氯化铝、聚氯化铝铁等，并提供聚丙烯酰胺和具有阻垢、分散、缓蚀、杀菌、除油，混凝等多种性能的几十种药剂。
+              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 mb-6 sm:mb-8 leading-relaxed">
+                本公司与多所高等院校及化工科研单位合作，研制生产出&ldquo;田邦&rdquo;&ldquo;中禹&rdquo;牌絮凝剂系列产品：聚氯化铝、聚氯化铝铁等，并提供聚丙烯酰胺和具有阻垢、分散、缓蚀、杀菌、除油，混凝等多种性能的几十种药剂。
               </p>
               <Button asChild size="lg" className="w-full sm:w-auto">
                 <Link href="/about">了解更多</Link>
               </Button>
             </div>
-            <div className="relative h-48 sm:h-64 md:h-96 bg-slate-800 rounded-lg overflow-hidden">
-              {/* Placeholder for factory image */}
-              <div className="absolute inset-0 flex items-center justify-center text-slate-600">
-                <Factory className="h-16 w-16 sm:h-20 sm:w-20 opacity-20" />
-                <span className="sr-only">Factory Image</span>
-              </div>
+            <div className="relative h-48 sm:h-64 md:h-96 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border-2 border-primary/20 dark:border-primary/10">
+              <CosImage
+                src="https://water-cleaner-1362847923.cos.ap-shanghai.myqcloud.com/微信图片_20260104172403_20_28.jpg"
+                alt="工厂实景"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         </div>

@@ -10,7 +10,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0); /* 完全不透明的白色 */
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.55 0.15 240); /* Softer Blue */
+  --primary: oklch(0.55 0.18 220); /* 海洋蓝 Ocean Blue */
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -18,10 +18,10 @@
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
+  --destructive: oklch(0.65 0.22 35); /* 橙色强调色 Orange Accent */
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.55 0.15 240); /* Match Primary */
+  --ring: oklch(0.55 0.18 220); /* Match Primary - Ocean Blue */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -44,7 +44,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0); /* 完全不透明的深色 */
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.65 0.15 240); /* Softer Blue Dark Mode */
+  --primary: oklch(0.65 0.18 220); /* 海洋蓝 Ocean Blue Dark Mode */
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -52,7 +52,7 @@
   --muted-foreground: oklch(0.708 0 0);
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
+  --destructive: oklch(0.704 0.22 35); /* 橙色强调色 Orange Accent Dark Mode */
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
@@ -82,5 +82,21 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
+  }
+}
+
+/* 灵动岛动画效果 */
+@keyframes dynamicIsland {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-20px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 }
